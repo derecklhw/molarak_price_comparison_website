@@ -126,7 +126,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>Main</mainClass>
+              <mainClass>mu.dl661.cst3130.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
