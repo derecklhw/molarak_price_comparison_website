@@ -26,7 +26,7 @@ public class HibernateConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        //sessionFactory.setPackagesToScan(new String[] { "mu.dl661.cst3130.model" });
+        sessionFactory.setPackagesToScan(new String[] { "mu.dl661.cst3130.model" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
      }
