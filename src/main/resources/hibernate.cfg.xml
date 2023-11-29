@@ -17,6 +17,7 @@
 
         <!-- Outputs the SQL queries, should be disabled in Production -->
         <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
 
         <!--  Behavior to the database schema at the initialization of the session factory-->
         <property name="hibernate.hbm2ddl.auto">update</property>
