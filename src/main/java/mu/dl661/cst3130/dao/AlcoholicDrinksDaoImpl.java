@@ -26,27 +26,41 @@ public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
     }
 
     @Override
-    public void updateAlcoholicDrinks() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAlcoholicDrinks'");
+    public void updateAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks) {
+        Session session = this.sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        session.merge(alcoholicDrinks);
+        tx.commit();
+        session.close();
     }
 
     @Override
-    public void deleteAlcoholicDrinks() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAlcoholicDrinks'");
+    public void deleteAlcoholicDrinks(int id) {
+        Session session = this.sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        AlcoholicDrinks persistentInstance = session.get(AlcoholicDrinks.class, id);
+        if (persistentInstance != null) {
+            session.remove(persistentInstance);
+        }
+        tx.commit();
+        session.close();
     }
 
     @Override
     public AlcoholicDrinks getAlcoholicDrinksById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAlcoholicDrinksById'");
+        Session session = this.sessionFactory.openSession();
+        AlcoholicDrinks alcoholicDrinks = session.get(AlcoholicDrinks.class, id);
+        session.close();
+        return alcoholicDrinks;
     }
 
     @Override
     public List<AlcoholicDrinks> getAllAlcoholicDrinks() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllAlcoholicDrinks'");
+        Session session = this.sessionFactory.openSession();
+        org.hibernate.query.Query<AlcoholicDrinks> query = session.createQuery("from AlcoholicDrinks", AlcoholicDrinks.class);
+        List<AlcoholicDrinks> alcoholicDrinksList = query.list();
+        session.close();
+        return alcoholicDrinksList; 
     }
     
 }

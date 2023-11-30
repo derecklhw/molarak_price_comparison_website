@@ -6,8 +6,8 @@ import mu.dl661.cst3130.model.AlcoholicDrinks;
 
 public interface AlcoholicDrinksDao {
     public void saveAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks);
-    public void updateAlcoholicDrinks();
-    public void deleteAlcoholicDrinks();
+    public void updateAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks);
+    public void deleteAlcoholicDrinks(int id);
     public AlcoholicDrinks getAlcoholicDrinksById(int id);
     List<AlcoholicDrinks> getAllAlcoholicDrinks();
 }
