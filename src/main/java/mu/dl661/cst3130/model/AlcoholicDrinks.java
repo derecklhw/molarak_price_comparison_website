@@ -12,24 +12,24 @@ import jakarta.persistence.Table;
 @Table(name = "alcoholic_drinks")
 public class AlcoholicDrinks {
     @Id
-    @Column(name = "id" )
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
     private String description;
 
-    @Column(name="brand")
+    @Column(name = "brand", length = 50, nullable = false)
     private String brand;
 
-    @Column(name="category")
+    @Column(name = "category", length = 50, nullable = false)
     private String category;
 
     @Lob
-    @Column(name="image")
+    @Column(name = "image")
     private byte[] image;
 
     public AlcoholicDrinks() {
@@ -79,15 +79,14 @@ public class AlcoholicDrinks {
         this.category = category;
     }
 
-    public void setImage(byte[] image) {    
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
     @Override
     public String toString() {
-        return String.format("{id: %d, name: %s, brand: %s, category: %s, description: %s}", id, name, brand, category, description);
+        return String.format("{id: %d, name: %s, brand: %s, category: %s, description: %s}", id, name, brand, category,
+                description);
     }
-
-
 
 }
