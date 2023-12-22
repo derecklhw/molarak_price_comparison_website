@@ -8,10 +8,10 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import mu.dl661.cst3130.model.AlcoholicDrinks;
+import mu.dl661.cst3130.model.Comparison;
 
-@Repository("alcoholicDrinksDao")
-public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
+@Repository("comparisonDao")
+public class ComparisonDaoImpl implements ComparisonDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -21,28 +21,28 @@ public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
     }
 
     @Override
-    public void saveAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks) {
+    public void saveComparison(Comparison comparison) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.persist(alcoholicDrinks);
+        session.persist(comparison);
         tx.commit();
         session.close();
     }
 
     @Override
-    public void updateAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks) {
+    public void updateComparison(Comparison comparison) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.merge(alcoholicDrinks);
+        session.merge(comparison);
         tx.commit();
         session.close();
     }
 
     @Override
-    public void deleteAlcoholicDrinks(int id) {
+    public void deleteComparison(int id) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        AlcoholicDrinks persistentInstance = session.get(AlcoholicDrinks.class, id);
+        Comparison persistentInstance = session.get(Comparison.class, id);
         if (persistentInstance != null) {
             session.remove(persistentInstance);
         }
@@ -51,20 +51,19 @@ public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
     }
 
     @Override
-    public AlcoholicDrinks getAlcoholicDrinksById(int id) {
+    public Comparison getComparisonById(int id) {
         Session session = this.sessionFactory.openSession();
-        AlcoholicDrinks alcoholicDrinks = session.get(AlcoholicDrinks.class, id);
+        Comparison comparison = session.get(Comparison.class, id);
         session.close();
-        return alcoholicDrinks;
+        return comparison;
     }
 
     @Override
-    public List<AlcoholicDrinks> getAllAlcoholicDrinks() {
+    public List<Comparison> getAllComparison() {
         Session session = this.sessionFactory.openSession();
-        org.hibernate.query.Query<AlcoholicDrinks> query = session.createQuery("from AlcoholicDrinks",
-                AlcoholicDrinks.class);
-        List<AlcoholicDrinks> alcoholicDrinksList = query.list();
+        org.hibernate.query.Query<Comparison> query = session.createQuery("from Comparison", Comparison.class);
+        List<Comparison> comparisonList = query.list();
         session.close();
-        return alcoholicDrinksList;
+        return comparisonList;
     }
 }

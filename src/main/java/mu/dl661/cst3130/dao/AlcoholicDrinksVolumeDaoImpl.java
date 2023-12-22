@@ -8,10 +8,10 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import mu.dl661.cst3130.model.AlcoholicDrinks;
+import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
 
-@Repository("alcoholicDrinksDao")
-public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
+@Repository("alcoholicDrinksVolumeDao")
+public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -21,28 +21,28 @@ public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
     }
 
     @Override
-    public void saveAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks) {
+    public void saveAlcoholicDrinksVolume(AlcoholicDrinksVolume alcoholicDrinksVolume) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.persist(alcoholicDrinks);
+        session.persist(alcoholicDrinksVolume);
         tx.commit();
         session.close();
     }
 
     @Override
-    public void updateAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks) {
+    public void updateAlcoholicDrinksVolume(AlcoholicDrinksVolume alcoholicDrinksVolume) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        session.merge(alcoholicDrinks);
+        session.merge(alcoholicDrinksVolume);
         tx.commit();
         session.close();
     }
 
     @Override
-    public void deleteAlcoholicDrinks(int id) {
+    public void deleteAlcoholicDrinksVolume(int id) {
         Session session = this.sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
-        AlcoholicDrinks persistentInstance = session.get(AlcoholicDrinks.class, id);
+        AlcoholicDrinksVolume persistentInstance = session.get(AlcoholicDrinksVolume.class, id);
         if (persistentInstance != null) {
             session.remove(persistentInstance);
         }
@@ -51,20 +51,20 @@ public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
     }
 
     @Override
-    public AlcoholicDrinks getAlcoholicDrinksById(int id) {
+    public AlcoholicDrinksVolume getAlcoholicDrinksVolumeById(int id) {
         Session session = this.sessionFactory.openSession();
-        AlcoholicDrinks alcoholicDrinks = session.get(AlcoholicDrinks.class, id);
+        AlcoholicDrinksVolume alcoholicDrinksVolume = session.get(AlcoholicDrinksVolume.class, id);
         session.close();
-        return alcoholicDrinks;
+        return alcoholicDrinksVolume;
     }
 
     @Override
-    public List<AlcoholicDrinks> getAllAlcoholicDrinks() {
+    public List<AlcoholicDrinksVolume> getAllAlcoholicDrinksVolume() {
         Session session = this.sessionFactory.openSession();
-        org.hibernate.query.Query<AlcoholicDrinks> query = session.createQuery("from AlcoholicDrinks",
-                AlcoholicDrinks.class);
-        List<AlcoholicDrinks> alcoholicDrinksList = query.list();
+        org.hibernate.query.Query<AlcoholicDrinksVolume> query = session.createQuery("from AlcoholicDrinksVolume",
+                AlcoholicDrinksVolume.class);
+        List<AlcoholicDrinksVolume> alcoholicDrinksVolumeList = query.list();
         session.close();
-        return alcoholicDrinksList;
+        return alcoholicDrinksVolumeList;
     }
 }
