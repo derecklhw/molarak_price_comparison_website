@@ -12,13 +12,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement; 
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:application.properties" })
 public class HibernateConfig {
-    
+
     @Autowired
     private Environment env;
 
@@ -29,7 +29,7 @@ public class HibernateConfig {
         sessionFactory.setPackagesToScan(new String[] { "mu.dl661.cst3130.model" });
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;
-     }
+    }
 
     @Bean
     public DataSource dataSource() {
@@ -43,8 +43,10 @@ public class HibernateConfig {
 
     private final Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.connection.pool_size", env.getProperty("hibernate.connection.pool_size"));
-        hibernateProperties.setProperty("hibernate.current_session_context_class", env.getProperty("hibernate.current_session_context_class"));
+        hibernateProperties.setProperty("hibernate.connection.pool_size",
+                env.getProperty("hibernate.connection.pool_size"));
+        hibernateProperties.setProperty("hibernate.current_session_context_class",
+                env.getProperty("hibernate.current_session_context_class"));
         hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         hibernateProperties.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
@@ -52,10 +54,10 @@ public class HibernateConfig {
     }
 
     @Bean
-    public HibernateTransactionManager transactionManager() {
-       HibernateTransactionManager txManager = new HibernateTransactionManager();
-       txManager.setSessionFactory(sessionFactory().getObject());
-       return txManager;
+    public HibernateTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager txManager = new HibernateTransactionManager();
+        txManager.setSessionFactory(sessionFactory().getObject());
+        return txManager;
     }
-    
+
 }
