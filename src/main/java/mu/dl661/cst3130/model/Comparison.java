@@ -10,7 +10,7 @@ public class Comparison {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "alcoholic_drinks_volumes_id", referencedColumnName = "id")
+    @JoinColumn(name = "alcoholic_drinks_volumes_id", referencedColumnName = "id", nullable = false)
     private AlcoholicDrinksVolume alcoholicDrinkVolume;
 
     @Column(name = "website_name", length = 100, nullable = false)

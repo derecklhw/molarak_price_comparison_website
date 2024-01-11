@@ -10,10 +10,10 @@ public class AlcoholicDrinksVolume {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "alcoholic_drinks_id", referencedColumnName = "id")
+    @JoinColumn(name = "alcoholic_drinks_id", referencedColumnName = "id", nullable = false)
     private AlcoholicDrinks alcoholicDrink;
 
-    @Column(name = "volume")
+    @Column(name = "volume", nullable = false)
     private int volume;
 
     public AlcoholicDrinksVolume() {

@@ -29,7 +29,7 @@ java -jar target/molarak-1.0-jar-with-dependencies.jar
 Create JDOC
 
 ```bash
-mvn site
+mvn javadoc:javadoc
 ```
 
 Selenium config
@@ -43,4 +43,18 @@ Pre-requisites:
 System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
 ChromeOptions options = new ChromeOptions();
 options.addArguments("--headless");
+```
+
+MySQL Database
+
+Import dump
+
+```bash
+sudo mysql molarak < dump_molarak.sql
+```
+
+Export dump
+
+```bash
+sudo mysqldump -u root -p molarak > dump_molarak.sql
 ```
