@@ -6,11 +6,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import mu.dl661.cst3130.model.AlcoholicDrinks;
 
-@Repository("alcoholicDrinksDao")
 public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
 
     @Autowired

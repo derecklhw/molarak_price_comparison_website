@@ -3,12 +3,12 @@ package mu.dl661.cst3130;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import mu.dl661.cst3130.config.HibernateConfig;
-import mu.dl661.cst3130.dao.AlcoholicDrinksDao;
 import mu.dl661.cst3130.dao.AlcoholicDrinksVolumeDao;
 import mu.dl661.cst3130.dao.ComparisonDao;
 import mu.dl661.cst3130.model.AlcoholicDrinks;
 import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
 import mu.dl661.cst3130.model.Comparison;
+import mu.dl661.cst3130.service.AlcoholicDrinksService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class Main {
 
             AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
 
-            AlcoholicDrinksDao alcoholicDrinksDao = context.getBean(AlcoholicDrinksDao.class);
+            AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
             AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks();
 
             alcoholicDrinks.setName("Beer");
@@ -31,7 +31,7 @@ public class Main {
             alcoholicDrinks.setImageUrl(
                         "https://www.heineken.com/ca/~/media/Heineken/Images/Products/Heineken/Heineken-Beer-Can-330ml.png");
 
-            alcoholicDrinksDao.saveAlcoholicDrinks(alcoholicDrinks);
+            alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks);
 
             logger.info("AlcoholicDrinks::" + alcoholicDrinks.getId());
 
