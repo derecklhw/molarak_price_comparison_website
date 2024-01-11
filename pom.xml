@@ -19,9 +19,10 @@
     <junit.jupiter.engine.version>5.10.0</junit.jupiter.engine.version>
     <junit.platform.runner.version>1.10.0</junit.platform.runner.version>
     <slf4j.version>2.0.9</slf4j.version>
+    <logback.version>1.4.14</logback.version>
     <spring.version>6.0.13</spring.version>
     <hibernate.version>6.3.1.Final</hibernate.version>
-    <mysql.connector.version>8.0.33</mysql.connector.version>
+    <mysql.connector.version>8.2.0</mysql.connector.version>
     <jsoup.version>1.16.2</jsoup.version>
     <selenium.version>4.13.0</selenium.version>
     <tomcat.version>10.0.12</tomcat.version>
@@ -41,7 +42,7 @@
 	    <version>${junit.platform.runner.version}</version>
       <scope>test</scope>
     </dependency>
-    <!--  slf4j library  -->
+    <!--  slf4j & LogBack library  -->
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -51,6 +52,11 @@
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
     </dependency>
     <!-- Spring -->
     <dependency>
