@@ -46,7 +46,7 @@ public class Main {
       ComparisonDao comparisonDao = context.getBean(ComparisonDao.class);
       Comparison comparison = new Comparison();
 
-      // comparison.setAlcoholicDrinkVolume(alcoholicDrinksVolume);
+      comparison.setAlcoholicDrinkVolume(alcoholicDrinksVolume);
       comparison.setWebsiteName("Amazon");
       comparison.setWebsiteUrl("https://www.amazon.ca/");
       comparison.setPrice(2);
