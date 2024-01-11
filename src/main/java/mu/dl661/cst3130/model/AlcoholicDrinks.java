@@ -28,9 +28,8 @@ public class AlcoholicDrinks {
     @Column(name = "category", length = 50, nullable = false)
     private String category;
 
-    @Lob
-    @Column(name = "image")
-    private byte[] image;
+    @Column(name = "imageUrl", length = 100, nullable = false)
+    private String imageUrl;
 
     public AlcoholicDrinks() {
     }
@@ -55,8 +54,8 @@ public class AlcoholicDrinks {
         return category;
     }
 
-    public byte[] getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public void setId(int id) {
@@ -79,8 +78,8 @@ public class AlcoholicDrinks {
         this.category = category;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override

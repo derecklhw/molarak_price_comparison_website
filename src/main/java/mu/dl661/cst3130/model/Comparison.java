@@ -20,7 +20,7 @@ public class Comparison {
     private String websiteUrl;
 
     @Column(name = "price", nullable = false)
-    private int price;
+    private double price;
 
     public Comparison() {
     }
@@ -41,7 +41,7 @@ public class Comparison {
         return websiteUrl;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -57,7 +57,7 @@ public class Comparison {
         this.websiteUrl = websiteUrl;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
