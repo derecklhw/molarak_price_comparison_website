@@ -14,6 +14,13 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import mu.dl661.cst3130.dao.AlcoholicDrinksDao;
+import mu.dl661.cst3130.dao.AlcoholicDrinksDaoImpl;
+import mu.dl661.cst3130.dao.AlcoholicDrinksVolumeDao;
+import mu.dl661.cst3130.dao.AlcoholicDrinksVolumeDaoImpl;
+import mu.dl661.cst3130.dao.ComparisonDao;
+import mu.dl661.cst3130.dao.ComparisonDaoImpl;
+
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:application.properties" })
@@ -58,6 +65,27 @@ public class HibernateConfig {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
         txManager.setSessionFactory(sessionFactory().getObject());
         return txManager;
+    }
+
+    @Bean
+    public AlcoholicDrinksDao alcoholicDrinksDao() {
+        AlcoholicDrinksDaoImpl dao = new AlcoholicDrinksDaoImpl();
+        dao.setSessionFactory(sessionFactory().getObject());
+        return dao;
+    }
+
+    @Bean
+    public AlcoholicDrinksVolumeDao alcoholicDrinksVolumeDao() {
+        AlcoholicDrinksVolumeDaoImpl dao = new AlcoholicDrinksVolumeDaoImpl();
+        dao.setSessionFactory(sessionFactory().getObject());
+        return dao;
+    }
+
+    @Bean
+    public ComparisonDao comparisonDao() {
+        ComparisonDaoImpl dao = new ComparisonDaoImpl();
+        dao.setSessionFactory(sessionFactory().getObject());
+        return dao;
     }
 
 }
