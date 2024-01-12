@@ -16,12 +16,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import mu.dl661.cst3130.utils.RegexUtil;
 
 public class WebsiteScraper1 extends Thread {
 
     private String url;
+    private static final Logger logger = LoggerFactory.getLogger(WebsiteScraper1.class);
 
     // Constructor
     public WebsiteScraper1(String url) {
@@ -55,7 +58,9 @@ public class WebsiteScraper1 extends Thread {
         Integer[] volumeOptions = { 50, 70, 100 };
 
         for (int page = 1; page <= 3; page++) {
-            driver.get(url + "/" + itemName + "?p=" + page + "&product_list_limit=96");
+            String urlToScraped = url + "/" + itemName + "?p=" + page + "&product_list_limit=96";
+            driver.get(urlToScraped);
+            logger.info("Scraping: " + urlToScraped);
             wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".item.product.product-item")));
 
             // Scroll the page to load all content
@@ -75,6 +80,7 @@ public class WebsiteScraper1 extends Thread {
             for (Element prod : prods) {
                 processProduct(prod, random, volumeOptions);
             }
+            logger.info("Finished scraping: " + urlToScraped);
         }
 
     }
@@ -90,14 +96,14 @@ public class WebsiteScraper1 extends Thread {
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
 
-        System.out.println(name);
-        System.out.println(brand);
-        System.out.println(category);
-        System.out.println(imageUrl);
-        System.out.println(volume);
-        System.out.println(websiteUrl);
-        System.out.println(price);
-        System.out.println();
+        // System.out.println(name);
+        // System.out.println(brand);
+        // System.out.println(category);
+        // System.out.println(imageUrl);
+        // System.out.println(volume);
+        // System.out.println(websiteUrl);
+        // System.out.println(price);
+        // System.out.println();
     }
 
     private String extractProductName(Element prod) {
