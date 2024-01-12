@@ -27,8 +27,8 @@ CREATE TABLE `alcoholic_drinks` (
   `name` varchar(100) NOT NULL,
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `brand` varchar(50) NOT NULL,
-  `category` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `imageUrl` varchar(100) NOT NULL,
+  `category` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `imageUrl` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `alcoholic_drinks_volumes`;
 CREATE TABLE `alcoholic_drinks_volumes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `alcoholic_drinks_id` int NOT NULL,
-  `volume` varchar(25) NOT NULL,
+  `volume` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `alcoholic_drinks_id` (`alcoholic_drinks_id`),
   CONSTRAINT `alcoholic_drinks_volumes_ibfk_1` FOREIGN KEY (`alcoholic_drinks_id`) REFERENCES `alcoholic_drinks` (`id`)
@@ -80,7 +80,7 @@ CREATE TABLE `comparison` (
   `alcoholic_drinks_volumes_id` int NOT NULL,
   `website_name` varchar(100) NOT NULL,
   `website_url` varchar(255) NOT NULL,
-  `price` varchar(25) NOT NULL,
+  `price` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `alcoholic_drinks_volumes_id` (`alcoholic_drinks_volumes_id`),
   CONSTRAINT `comparison_ibfk_1` FOREIGN KEY (`alcoholic_drinks_volumes_id`) REFERENCES `alcoholic_drinks_volumes` (`id`)
@@ -105,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-01-12 12:16:55
+-- Dump completed on 2024-01-12 16:02:53

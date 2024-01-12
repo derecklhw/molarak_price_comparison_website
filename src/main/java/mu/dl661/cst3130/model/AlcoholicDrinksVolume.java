@@ -13,8 +13,8 @@ public class AlcoholicDrinksVolume {
     @JoinColumn(name = "alcoholic_drinks_id", referencedColumnName = "id", nullable = false)
     private AlcoholicDrinks alcoholicDrink;
 
-    @Column(name = "volume", length = 25, nullable = false)
-    private String volume;
+    @Column(name = "volume")
+    private int volume;
 
     public AlcoholicDrinksVolume() {
     }
@@ -27,7 +27,7 @@ public class AlcoholicDrinksVolume {
         return alcoholicDrink;
     }
 
-    public String getVolume() {
+    public int getVolume() {
         return volume;
     }
 
@@ -35,7 +35,7 @@ public class AlcoholicDrinksVolume {
         this.alcoholicDrink = alcoholicDrink;
     }
 
-    public void setVolume(String volume) {
+    public void setVolume(int volume) {
         this.volume = volume;
     }
 

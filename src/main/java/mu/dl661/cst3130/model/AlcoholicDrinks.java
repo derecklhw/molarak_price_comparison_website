@@ -24,10 +24,10 @@ public class AlcoholicDrinks {
     @Column(name = "brand", length = 50, nullable = false)
     private String brand;
 
-    @Column(name = "category", length = 50)
+    @Column(name = "category", length = 50, nullable = false)
     private String category;
 
-    @Column(name = "imageUrl", length = 100, nullable = false)
+    @Column(name = "imageUrl", length = 100)
     private String imageUrl;
 
     public AlcoholicDrinks() {
