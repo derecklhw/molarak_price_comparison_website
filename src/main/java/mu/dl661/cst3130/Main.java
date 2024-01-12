@@ -3,8 +3,6 @@ package mu.dl661.cst3130;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import mu.dl661.cst3130.config.HibernateConfig;
-import mu.dl661.cst3130.dao.AlcoholicDrinksVolumeDao;
-import mu.dl661.cst3130.dao.ComparisonDao;
 import mu.dl661.cst3130.model.AlcoholicDrinks;
 import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
 import mu.dl661.cst3130.model.Comparison;
@@ -21,6 +19,9 @@ public class Main {
             AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
 
             AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
+
+            alcoholicDrinksService.deleteAllAlcoholicDrinks();
+
             AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks("kok", "description", "brand", "category",
                         "imageUrl");
 

@@ -64,4 +64,13 @@ public class ComparisonDaoImpl implements ComparisonDao {
         session.close();
         return comparisonList;
     }
+
+    @Override
+    public void deleteAllComparison() {
+        Session session = this.sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        org.hibernate.query.Query query = session.createQuery("delete from Comparison");
+        query.executeUpdate();
+        tx.commit();
+    }
 }

@@ -15,4 +15,6 @@ public interface ComparisonDao {
 
     List<Comparison> getAllComparison();
 
+    public void deleteAllComparison();
+
 }

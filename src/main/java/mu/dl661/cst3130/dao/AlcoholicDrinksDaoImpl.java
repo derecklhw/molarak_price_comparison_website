@@ -65,4 +65,18 @@ public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
         session.close();
         return alcoholicDrinksList;
     }
+
+    @Override
+    public void deleteAllAlcoholicDrinks() {
+        Session session = this.sessionFactory.openSession();
+        Transaction tx = session.beginTransaction();
+        org.hibernate.query.Query<AlcoholicDrinks> query = session.createQuery("from AlcoholicDrinks",
+                AlcoholicDrinks.class);
+        List<AlcoholicDrinks> alcoholicDrinksList = query.list();
+        for (AlcoholicDrinks alcoholicDrinks : alcoholicDrinksList) {
+            session.remove(alcoholicDrinks);
+        }
+        tx.commit();
+        session.close();
+    }
 }

@@ -61,4 +61,12 @@ public class AlcoholicDrinksServiceImp implements AlcoholicDrinksService {
     public List<AlcoholicDrinks> getAllAlcoholicDrinks() {
         return this.alcoholicDrinksDao.getAllAlcoholicDrinks();
     }
+
+    @Override
+    @Transactional
+    public void deleteAllAlcoholicDrinks() {
+        this.comparisonDao.deleteAllComparison();
+        this.alcoholicDrinksVolumeDao.deleteAllAlcoholicDrinksVolume();
+        this.alcoholicDrinksDao.deleteAllAlcoholicDrinks();
+    }
 }

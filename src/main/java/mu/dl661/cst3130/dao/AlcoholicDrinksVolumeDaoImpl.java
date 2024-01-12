@@ -65,4 +65,12 @@ public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
         session.close();
         return alcoholicDrinksVolumeList;
     }
+
+    @Override
+    public void deleteAllAlcoholicDrinksVolume() {
+        Session session = this.sessionFactory.getCurrentSession();
+        Transaction tx = session.beginTransaction();
+        session.createQuery("delete from AlcoholicDrinksVolume").executeUpdate();
+        tx.commit();
+    }
 }

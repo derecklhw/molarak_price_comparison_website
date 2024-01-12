@@ -17,4 +17,6 @@ public interface AlcoholicDrinksService {
     public AlcoholicDrinks getAlcoholicDrinksById(int id);
 
     List<AlcoholicDrinks> getAllAlcoholicDrinks();
+
+    public void deleteAllAlcoholicDrinks();
 }

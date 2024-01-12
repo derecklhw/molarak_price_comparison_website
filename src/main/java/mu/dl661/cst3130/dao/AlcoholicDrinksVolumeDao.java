@@ -14,4 +14,6 @@ public interface AlcoholicDrinksVolumeDao {
     public AlcoholicDrinksVolume getAlcoholicDrinksVolumeById(int id);
 
     List<AlcoholicDrinksVolume> getAllAlcoholicDrinksVolume();
+
+    public void deleteAllAlcoholicDrinksVolume();
 }
