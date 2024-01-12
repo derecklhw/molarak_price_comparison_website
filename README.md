@@ -36,7 +36,7 @@ Selenium config
 
 Pre-requisites:
 
-1. Google Chrome 119.0.6045.159
+1. Google Chrome 119.0.6045.159 - has been downgraded to 118, will need to write docs on the process <https://www.youtube.com/watch?v=OlMX0gxyL58>
 2. Chrome Driver 119.0.6045.159 <https://chromedriver.chromium.org/downloads>
 
 ```java

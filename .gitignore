@@ -44,3 +44,6 @@ buildNumber.properties
 
 # Idea project files
 .vscode/
+
+# OS X
+chrome-linux64
