@@ -1,7 +1,7 @@
 package mu.dl661.cst3130.scraper;
 
 import java.time.Duration;
-import java.util.Random;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,6 +16,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import mu.dl661.cst3130.utils.RegexUtil;
 
 public class WebsiteScraper2 extends Thread {
     private String url;
@@ -71,14 +73,87 @@ public class WebsiteScraper2 extends Thread {
         Elements prods = doc.select(".Productstyled__StyledProduct-sc-1u7jkhl-0.gYdgyw");
 
         for (Element prod : prods) {
-            System.out.println(url);
-            // processProduct(prod);
+            processProduct(prod);
         }
 
         logger.info("Finished scraping: " + urlToScraped);
     }
 
     private void processProduct(Element prod) {
+        String name = extractProductName(prod);
+        String brand = extractBrand(name);
+        name = name.replaceFirst(Pattern.quote(brand), "").trim();
+
+        // Remove "The " with a space in front of the name
+        if (RegexUtil.matches(name, "^The\\s")) {
+            name = name.replaceFirst("^The\\s", "").trim();
+        }
+
+        String category = "scotch-whisky";
+        String imageUrl = extractImageUrl(prod);
+        int volume = extractVolume(prod);
+        String websiteUrl = extractWebsiteUrl(prod);
+        Double price = extractPrice(prod);
+
+        System.out.println(name);
+        System.out.println(brand);
+        System.out.println(category);
+        System.out.println(imageUrl);
+        System.out.println(volume);
+        System.out.println(websiteUrl);
+        System.out.println(price);
+    }
+
+    private String extractProductName(Element prod) {
+        Elements prodAnchorTags = prod.select("a.Productstyled__StyledProductTitle-sc-1u7jkhl-4.fkAzjy");
+        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().text() : "";
+    }
+
+    private String extractBrand(String name) {
+        String brand = RegexUtil.matchFirstGroup(name, "The\\s+(\\w+)");
+        return brand != null ? brand : name.split("\\s+")[0];
+    }
+
+    private String extractImageUrl(Element prod) {
+        Elements prodImageTags = prod.select(
+                "img.Imagestyled__StyledImage-sc-o2u3zt-0.fqTGiu.Productstyled__StyledProductImage-sc-1u7jkhl-2.hGWvXZ");
+        return !prodImageTags.isEmpty() ? url + prodImageTags.first().attr("src") : "";
+    }
+
+    private int extractVolume(Element prod) {
+        Elements prodVolumeTags = prod.select("div.Productstyled__StyledProductAttributes-sc-1u7jkhl-5.hJkuHj");
+        if (!prodVolumeTags.isEmpty()) {
+            String volumeText = RegexUtil.matchFirstGroup(prodVolumeTags.first().text(), "(\\d+)\\s*cl");
+            if (volumeText != null) {
+                try {
+                    return Integer.parseInt(volumeText);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return 0;
+    }
+
+    private String extractWebsiteUrl(Element prod) {
+        Elements prodAnchorTags = prod.select("a.Productstyled__StyledProductImageAnchor-sc-1u7jkhl-1.kehXyw");
+        return !prodAnchorTags.isEmpty() ? url + prodAnchorTags.first().attr("href") : "";
+    }
+
+    private double extractPrice(Element prod) {
+        Elements prodPriceTags = prod.select("div.Discount__StyledPrice-sc-fd12ta-0.bZMozI.priceText");
+        if (!prodPriceTags.isEmpty()) {
+            String priceText = prodPriceTags.text().trim();
+
+            priceText = priceText.replaceAll("[^\\d.]", "");
+
+            try {
+                return Double.parseDouble(priceText);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+        return 0.0;
     }
 
 }

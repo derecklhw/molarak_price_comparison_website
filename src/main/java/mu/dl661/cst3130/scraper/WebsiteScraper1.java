@@ -88,7 +88,6 @@ public class WebsiteScraper1 extends Thread {
     private void processProduct(Element prod, Random random, Integer[] volumeOptions) {
         String name = extractProductName(prod);
         String brand = extractBrand(name);
-        System.out.println(name);
         name = name.replaceFirst(Pattern.quote(brand), "").trim();
 
         // Remove "The " with a space in front of the name
@@ -102,7 +101,6 @@ public class WebsiteScraper1 extends Thread {
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
 
-        System.out.println(name);
         // System.out.println(brand);
         // System.out.println(category);
         // System.out.println(imageUrl);
