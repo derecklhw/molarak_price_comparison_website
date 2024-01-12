@@ -3,9 +3,6 @@ package mu.dl661.cst3130;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import mu.dl661.cst3130.config.HibernateConfig;
-import mu.dl661.cst3130.model.AlcoholicDrinks;
-import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
-import mu.dl661.cst3130.model.Comparison;
 import mu.dl661.cst3130.service.AlcoholicDrinksService;
 import mu.dl661.cst3130.threading.ThreadManager;
 
@@ -16,26 +13,19 @@ public class Main {
       public static void main(String[] args) {
             Logger logger = LoggerFactory.getLogger(Main.class);
 
-            AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+            // delete all alcoholic drinks from database
+            deleteAllAlcoholicDrinks();
+            logger.info("Deleted all alcoholic drinks from database");
 
-            AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
-
-            alcoholicDrinksService.deleteAllAlcoholicDrinks();
-
-            AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks("kok", "description", "brand", "category",
-                        "imageUrl");
-
-            AlcoholicDrinksVolume alcoholicDrinksVolume = new AlcoholicDrinksVolume(alcoholicDrinks, 330);
-
-            Comparison comparison = new Comparison(alcoholicDrinksVolume, "Amazon", "https://www.amazon.ca/", 2);
-
-            alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks, alcoholicDrinksVolume, comparison);
-
-            logger.info("Alcoholic Drink: " + alcoholicDrinks.getName() + " saved successfully");
-            // // close resources
-            context.close();
-            // ThreadManager threadManager = new ThreadManager();
-            // threadManager.runScraperThreads();
+            ThreadManager threadManager = new ThreadManager();
+            threadManager.runScraperThreads();
             ;
+      }
+
+      private static void deleteAllAlcoholicDrinks() {
+            AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+            AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
+            alcoholicDrinksService.deleteAllAlcoholicDrinks();
+            context.close();
       }
 }

@@ -83,6 +83,9 @@ public class WebsiteScraper5 extends Thread {
             for (Element prod : prods) {
                 processProduct(prod, urlToScraped);
             }
+
+            logger.info("Finished scraping website: " + url);
+
         }
     }
 
@@ -105,6 +108,8 @@ public class WebsiteScraper5 extends Thread {
         logger.info("Finished scraping: " + urlToScraped);
 
         saveAlcoholicDrinks(name, description, brand, category, imageUrl, volume, websiteUrl, price);
+
+        logger.info("Finished saving to database");
 
     }
 

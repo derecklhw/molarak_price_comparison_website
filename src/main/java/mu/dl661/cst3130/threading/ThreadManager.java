@@ -8,7 +8,7 @@ public class ThreadManager {
         Thread website2 = new WebsiteScraper2("http://www.masterofmalt.com");
         Thread website3 = new WebsiteScraper3("https://www.onbuy.com");
         Thread website4 = new WebsiteScraper4("http://www.thewhiskyexchange.com");
-        Thread website5 = new WebsiteScraper5("https://www.selfridges.com");
+        Thread website5 = new WebsiteScraper5("https://spiritskiosk.com");
 
         website1.start();
         website2.start();

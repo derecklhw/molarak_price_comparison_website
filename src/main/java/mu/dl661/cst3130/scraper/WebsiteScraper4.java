@@ -16,7 +16,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import mu.dl661.cst3130.config.HibernateConfig;
+import mu.dl661.cst3130.model.AlcoholicDrinks;
+import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
+import mu.dl661.cst3130.model.Comparison;
+import mu.dl661.cst3130.service.AlcoholicDrinksService;
 import mu.dl661.cst3130.utils.RegexUtil;
 
 public class WebsiteScraper4 extends Thread {
@@ -72,12 +78,14 @@ public class WebsiteScraper4 extends Thread {
         Elements prods = doc.select(".product-grid__item");
 
         for (Element prod : prods) {
-            processProduct(prod);
+            processProduct(prod, urlToScraped);
         }
-        logger.info("Finished scraping: " + urlToScraped);
+
+        logger.info("Finished scraping website: " + url);
+
     }
 
-    private void processProduct(Element prod) {
+    private void processProduct(Element prod, String urlToScraped) {
         String name = extractProductName(prod);
         String brand = extractBrand(name);
         name = name.replaceFirst(Pattern.quote(brand), "").trim();
@@ -86,12 +94,18 @@ public class WebsiteScraper4 extends Thread {
         if (RegexUtil.matches(name, "^The\\s")) {
             name = name.replaceFirst("^The\\s", "").trim();
         }
-
+        String description = null;
         String category = "scotch-whisky";
         String imageUrl = extractImageUrl(prod);
         int volume = extractVolume(prod);
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
+
+        logger.info("Finished scraping: " + urlToScraped);
+
+        saveAlcoholicDrinks(name, description, brand, category, imageUrl, volume, websiteUrl, price);
+
+        logger.info("Finished saving to database");
 
     }
 
@@ -147,5 +161,21 @@ public class WebsiteScraper4 extends Thread {
             }
         }
         return 0.0;
+    }
+
+    private void saveAlcoholicDrinks(String name, String description, String brand, String category, String imageUrl,
+            int volume, String websiteUrl, Double price) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+
+        AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
+        AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks(name, description, brand, category,
+                imageUrl);
+        AlcoholicDrinksVolume alcoholicDrinksVolume = new AlcoholicDrinksVolume(alcoholicDrinks, volume);
+
+        Comparison comparison = new Comparison(alcoholicDrinksVolume, url, websiteUrl, price);
+        alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks, alcoholicDrinksVolume, comparison);
+        context.close();
+
+        logger.info("Alcoholic Drink: " + alcoholicDrinks.getName() + " saved successfully");
     }
 }
