@@ -22,6 +22,10 @@ import mu.dl661.cst3130.dao.ComparisonDao;
 import mu.dl661.cst3130.dao.ComparisonDaoImpl;
 import mu.dl661.cst3130.service.AlcoholicDrinksServiceImp;
 
+/**
+ * This class configures the Hibernate session factory, data source, and
+ * transaction manager.
+ */
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:application.properties" })
@@ -30,6 +34,11 @@ public class HibernateConfig {
     @Autowired
     private Environment env;
 
+    /**
+     * Configures and returns the LocalSessionFactoryBean.
+     * 
+     * @return The configured LocalSessionFactoryBean.
+     */
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -39,6 +48,11 @@ public class HibernateConfig {
         return sessionFactory;
     }
 
+    /**
+     * Configures and returns the DataSource.
+     * 
+     * @return The configured DataSource.
+     */
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
@@ -49,6 +63,11 @@ public class HibernateConfig {
         return dataSource;
     }
 
+    /**
+     * Configures and returns the Hibernate properties.
+     * 
+     * @return The configured Hibernate properties.
+     */
     private final Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.connection.pool_size",
@@ -61,6 +80,11 @@ public class HibernateConfig {
         return hibernateProperties;
     }
 
+    /**
+     * Configures and returns the HibernateTransactionManager.
+     * 
+     * @return The configured HibernateTransactionManager.
+     */
     @Bean
     public HibernateTransactionManager hibernateTransactionManager() {
         HibernateTransactionManager txManager = new HibernateTransactionManager();
@@ -68,6 +92,11 @@ public class HibernateConfig {
         return txManager;
     }
 
+    /**
+     * Configures and returns the AlcoholicDrinksDao.
+     * 
+     * @return The configured AlcoholicDrinksDao.
+     */
     @Bean
     public AlcoholicDrinksDao alcoholicDrinksDao() {
         AlcoholicDrinksDaoImpl dao = new AlcoholicDrinksDaoImpl();
@@ -75,6 +104,11 @@ public class HibernateConfig {
         return dao;
     }
 
+    /**
+     * Configures and returns the AlcoholicDrinksVolumeDao.
+     * 
+     * @return The configured AlcoholicDrinksVolumeDao.
+     */
     @Bean
     public AlcoholicDrinksVolumeDao alcoholicDrinksVolumeDao() {
         AlcoholicDrinksVolumeDaoImpl dao = new AlcoholicDrinksVolumeDaoImpl();
@@ -82,6 +116,11 @@ public class HibernateConfig {
         return dao;
     }
 
+    /**
+     * Configures and returns the ComparisonDao.
+     * 
+     * @return The configured ComparisonDao.
+     */
     @Bean
     public ComparisonDao comparisonDao() {
         ComparisonDaoImpl dao = new ComparisonDaoImpl();
@@ -89,6 +128,11 @@ public class HibernateConfig {
         return dao;
     }
 
+    /**
+     * Configures and returns the AlcoholicDrinksServiceImp.
+     * 
+     * @return The configured AlcoholicDrinksServiceImp.
+     */
     @Bean
     public AlcoholicDrinksServiceImp alcoholicDrinksServiceImp() {
         AlcoholicDrinksServiceImp alcoholicDrinksService = new AlcoholicDrinksServiceImp();

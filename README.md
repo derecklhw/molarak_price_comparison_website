@@ -32,6 +32,12 @@ Create JDOC
 mvn javadoc:javadoc
 ```
 
+or
+
+```bash
+mvn site
+```
+
 Selenium config
 
 Pre-requisites:

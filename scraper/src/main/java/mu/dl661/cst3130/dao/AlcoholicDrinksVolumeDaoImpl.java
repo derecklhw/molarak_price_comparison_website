@@ -9,15 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
 
+/**
+ * This class implements the AlcoholicDrinksVolumeDao interface and provides
+ * the implementation for CRUD operations related to AlcoholicDrinksVolume
+ * objects.
+ */
 public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
 
     @Autowired
     private SessionFactory sessionFactory;
 
+    /**
+     * Sets the SessionFactory to be used for database operations.
+     *
+     * @param sessionFactory the SessionFactory to be set
+     */
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * Saves the given AlcoholicDrinksVolume object to the database.
+     *
+     * @param alcoholicDrinksVolume the AlcoholicDrinksVolume object to be saved
+     */
     @Override
     public void saveAlcoholicDrinksVolume(AlcoholicDrinksVolume alcoholicDrinksVolume) {
         Session session = this.sessionFactory.openSession();
@@ -27,6 +42,11 @@ public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
         session.close();
     }
 
+    /**
+     * Updates the given AlcoholicDrinksVolume object in the database.
+     *
+     * @param alcoholicDrinksVolume the AlcoholicDrinksVolume object to be updated
+     */
     @Override
     public void updateAlcoholicDrinksVolume(AlcoholicDrinksVolume alcoholicDrinksVolume) {
         Session session = this.sessionFactory.openSession();
@@ -36,6 +56,12 @@ public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
         session.close();
     }
 
+    /**
+     * Deletes the AlcoholicDrinksVolume object with the specified ID from the
+     * database.
+     *
+     * @param id the ID of the AlcoholicDrinksVolume object to be deleted
+     */
     @Override
     public void deleteAlcoholicDrinksVolume(int id) {
         Session session = this.sessionFactory.openSession();
@@ -48,6 +74,14 @@ public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
         session.close();
     }
 
+    /**
+     * Retrieves the AlcoholicDrinksVolume object with the specified ID from the
+     * database.
+     *
+     * @param id the ID of the AlcoholicDrinksVolume object to be retrieved
+     * @return the AlcoholicDrinksVolume object with the specified ID, or null if
+     *         not found
+     */
     @Override
     public AlcoholicDrinksVolume getAlcoholicDrinksVolumeById(int id) {
         Session session = this.sessionFactory.openSession();
@@ -56,6 +90,11 @@ public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
         return alcoholicDrinksVolume;
     }
 
+    /**
+     * Retrieves all AlcoholicDrinksVolume objects from the database.
+     *
+     * @return a list of all AlcoholicDrinksVolume objects
+     */
     @Override
     public List<AlcoholicDrinksVolume> getAllAlcoholicDrinksVolume() {
         Session session = this.sessionFactory.openSession();
@@ -66,6 +105,9 @@ public class AlcoholicDrinksVolumeDaoImpl implements AlcoholicDrinksVolumeDao {
         return alcoholicDrinksVolumeList;
     }
 
+    /**
+     * Deletes all AlcoholicDrinksVolume objects from the database.
+     */
     @Override
     public void deleteAllAlcoholicDrinksVolume() {
         Session session = this.sessionFactory.getCurrentSession();
