@@ -18,13 +18,13 @@ public class AlcoholicDrinks {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "brand", length = 50, nullable = false)
     private String brand;
 
-    @Column(name = "category", length = 50, nullable = false)
+    @Column(name = "category", length = 50)
     private String category;
 
     @Column(name = "imageUrl", length = 100, nullable = false)

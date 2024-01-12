@@ -19,8 +19,8 @@ public class Comparison {
     @Column(name = "website_url", length = 255, nullable = false)
     private String websiteUrl;
 
-    @Column(name = "price", nullable = false)
-    private double price;
+    @Column(name = "price", length = 25, nullable = false)
+    private String price;
 
     public Comparison() {
     }
@@ -41,7 +41,7 @@ public class Comparison {
         return websiteUrl;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
@@ -57,7 +57,7 @@ public class Comparison {
         this.websiteUrl = websiteUrl;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
