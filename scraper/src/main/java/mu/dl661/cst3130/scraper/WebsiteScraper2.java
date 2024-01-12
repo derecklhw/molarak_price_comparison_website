@@ -42,16 +42,19 @@ public class WebsiteScraper2 extends Thread {
                 System.getProperty("user.dir") + "/chrome-linux64/chrome");
         // options.addArguments("--headless");
 
-        WebDriver driver = new ChromeDriver(options);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
+        WebDriver driver = null;
         try {
+            driver = new ChromeDriver(options);
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
             scrapePages(driver, js, wait);
-        } catch (InterruptedException e) {
-            System.out.println("Interrupted Exception: " + e.getMessage());
+        } catch (Exception e) {
+            logger.error("Error occurred during scraping: " + e.getMessage(), e);
         } finally {
-            driver.quit();
+            if (driver != null) {
+                driver.quit();
+            }
         }
     }
 
@@ -164,18 +167,22 @@ public class WebsiteScraper2 extends Thread {
 
     private void saveAlcoholicDrinks(String name, String description, String brand, String category, String imageUrl,
             int volume, String websiteUrl, Double price) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+                HibernateConfig.class)) {
 
-        AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
-        AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks(name, description, brand, category,
-                imageUrl);
-        AlcoholicDrinksVolume alcoholicDrinksVolume = new AlcoholicDrinksVolume(alcoholicDrinks, volume);
+            AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
+            AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks(name, description, brand, category,
+                    imageUrl);
+            AlcoholicDrinksVolume alcoholicDrinksVolume = new AlcoholicDrinksVolume(alcoholicDrinks, volume);
 
-        Comparison comparison = new Comparison(alcoholicDrinksVolume, url, websiteUrl, price);
-        alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks, alcoholicDrinksVolume, comparison);
-        context.close();
+            Comparison comparison = new Comparison(alcoholicDrinksVolume, url, websiteUrl, price);
+            alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks, alcoholicDrinksVolume, comparison);
+            context.close();
 
-        logger.info("Alcoholic Drink: " + alcoholicDrinks.getName() + " saved successfully");
+            logger.info("Alcoholic Drink: " + alcoholicDrinks.getName() + " saved successfully");
+        } catch (Exception e) {
+            logger.error("Error saving alcoholic drink: " + e.getMessage());
+        }
     }
 
 }
