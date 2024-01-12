@@ -100,15 +100,6 @@ public class WebsiteScraper1 extends Thread {
         int volume = volumeOptions[random.nextInt(volumeOptions.length)];
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
-
-        System.out.println(name);
-        System.out.println(brand);
-        System.out.println(category);
-        System.out.println(imageUrl);
-        System.out.println(volume);
-        System.out.println(websiteUrl);
-        System.out.println(price);
-        System.out.println();
     }
 
     private String extractProductName(Element prod) {
