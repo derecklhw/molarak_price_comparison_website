@@ -27,7 +27,7 @@ public class AlcoholicDrinks {
     @Column(name = "category", length = 50, nullable = false)
     private String category;
 
-    @Column(name = "imageUrl", length = 100)
+    @Column(name = "imageUrl", length = 2083)
     private String imageUrl;
 
     public AlcoholicDrinks() {

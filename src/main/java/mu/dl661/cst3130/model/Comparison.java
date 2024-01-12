@@ -16,7 +16,7 @@ public class Comparison {
     @Column(name = "website_name", length = 100, nullable = false)
     private String websiteName;
 
-    @Column(name = "website_url", length = 255, nullable = false)
+    @Column(name = "website_url", length = 2083, nullable = false)
     private String websiteUrl;
 
     @Column(name = "price")

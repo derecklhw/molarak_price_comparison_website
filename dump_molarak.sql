@@ -28,7 +28,7 @@ CREATE TABLE `alcoholic_drinks` (
   `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `brand` varchar(50) NOT NULL,
   `category` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `imageUrl` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `imageUrl` varchar(2083) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -79,7 +79,7 @@ CREATE TABLE `comparison` (
   `id` int NOT NULL AUTO_INCREMENT,
   `alcoholic_drinks_volumes_id` int NOT NULL,
   `website_name` varchar(100) NOT NULL,
-  `website_url` varchar(255) NOT NULL,
+  `website_url` varchar(2083) NOT NULL,
   `price` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `alcoholic_drinks_volumes_id` (`alcoholic_drinks_volumes_id`),
