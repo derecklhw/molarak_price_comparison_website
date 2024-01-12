@@ -25,6 +25,14 @@ public class Comparison {
     public Comparison() {
     }
 
+    public Comparison(AlcoholicDrinksVolume alcoholicDrinkVolume, String websiteName, String websiteUrl,
+            double price) {
+        this.alcoholicDrinkVolume = alcoholicDrinkVolume;
+        this.websiteName = websiteName;
+        this.websiteUrl = websiteUrl;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }

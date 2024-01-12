@@ -9,6 +9,7 @@ import mu.dl661.cst3130.model.AlcoholicDrinks;
 import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
 import mu.dl661.cst3130.model.Comparison;
 import mu.dl661.cst3130.service.AlcoholicDrinksService;
+import mu.dl661.cst3130.threading.ThreadManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,42 +21,20 @@ public class Main {
             AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
 
             AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
-            AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks();
+            AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks("kok", "description", "brand", "category",
+                        "imageUrl");
 
-            alcoholicDrinks.setName("Beer");
-            alcoholicDrinks
-                        .setDescription(
-                                    "Beer is an alcoholic drink made from yeast-fermented malt and flavored with hops.");
-            alcoholicDrinks.setBrand("Heineken");
-            alcoholicDrinks.setCategory("Lager");
-            alcoholicDrinks.setImageUrl(
-                        "https://www.heineken.com/ca/~/media/Heineken/Images/Products/Heineken/Heineken-Beer-Can-330ml.png");
+            AlcoholicDrinksVolume alcoholicDrinksVolume = new AlcoholicDrinksVolume(alcoholicDrinks, 330);
 
-            alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks);
+            Comparison comparison = new Comparison(alcoholicDrinksVolume, "Amazon", "https://www.amazon.ca/", 2);
 
-            logger.info("AlcoholicDrinks::" + alcoholicDrinks.getId());
+            alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks, alcoholicDrinksVolume, comparison);
 
-            AlcoholicDrinksVolumeDao alcoholicDrinksVolumeDao = context.getBean(AlcoholicDrinksVolumeDao.class);
-            AlcoholicDrinksVolume alcoholicDrinksVolume = new AlcoholicDrinksVolume();
-
-            alcoholicDrinksVolume.setAlcoholicDrink(alcoholicDrinks);
-            alcoholicDrinksVolume.setVolume(330);
-            alcoholicDrinksVolumeDao.saveAlcoholicDrinksVolume(alcoholicDrinksVolume);
-
-            logger.info("AlcoholicDrinksVolume::" + alcoholicDrinksVolume.getId());
-
-            ComparisonDao comparisonDao = context.getBean(ComparisonDao.class);
-            Comparison comparison = new Comparison();
-
-            comparison.setAlcoholicDrinkVolume(alcoholicDrinksVolume);
-            comparison.setWebsiteName("Amazon");
-            comparison.setWebsiteUrl("https://www.amazon.ca/");
-            comparison.setPrice(2);
-            comparisonDao.saveComparison(comparison);
-
-            logger.info("Comparison::" + comparison.getId());
-
-            // close resources
+            logger.info("Alcoholic Drink: " + alcoholicDrinks.getName() + " saved successfully");
+            // // close resources
             context.close();
+            // ThreadManager threadManager = new ThreadManager();
+            // threadManager.runScraperThreads();
+            ;
       }
 }

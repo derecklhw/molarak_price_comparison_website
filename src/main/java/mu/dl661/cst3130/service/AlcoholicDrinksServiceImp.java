@@ -5,20 +5,37 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import mu.dl661.cst3130.dao.AlcoholicDrinksDao;
+import mu.dl661.cst3130.dao.AlcoholicDrinksVolumeDao;
+import mu.dl661.cst3130.dao.ComparisonDao;
 import mu.dl661.cst3130.model.AlcoholicDrinks;
+import mu.dl661.cst3130.model.AlcoholicDrinksVolume;
+import mu.dl661.cst3130.model.Comparison;
 
 public class AlcoholicDrinksServiceImp implements AlcoholicDrinksService {
 
     private AlcoholicDrinksDao alcoholicDrinksDao;
+    private AlcoholicDrinksVolumeDao alcoholicDrinksVolumeDao;
+    private ComparisonDao comparisonDao;
 
     public void setAlcoholicDrinksDao(AlcoholicDrinksDao alcoholicDrinksDao) {
         this.alcoholicDrinksDao = alcoholicDrinksDao;
     }
 
+    public void setAlcoholicDrinksVolumeDao(AlcoholicDrinksVolumeDao alcoholicDrinksVolumeDao) {
+        this.alcoholicDrinksVolumeDao = alcoholicDrinksVolumeDao;
+    }
+
+    public void setComparisonDao(ComparisonDao comparisonDao) {
+        this.comparisonDao = comparisonDao;
+    }
+
     @Override
     @Transactional
-    public void saveAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks) {
+    public void saveAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks, AlcoholicDrinksVolume alcoholicDrinksVolume,
+            Comparison comparison) {
         this.alcoholicDrinksDao.saveAlcoholicDrinks(alcoholicDrinks);
+        this.alcoholicDrinksVolumeDao.saveAlcoholicDrinksVolume(alcoholicDrinksVolume);
+        this.comparisonDao.saveComparison(comparison);
     }
 
     @Override

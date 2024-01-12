@@ -21,8 +21,6 @@ import mu.dl661.cst3130.dao.AlcoholicDrinksVolumeDaoImpl;
 import mu.dl661.cst3130.dao.ComparisonDao;
 import mu.dl661.cst3130.dao.ComparisonDaoImpl;
 import mu.dl661.cst3130.service.AlcoholicDrinksServiceImp;
-import mu.dl661.cst3130.service.AlcoholicDrinksVolumeServiceImpl;
-import mu.dl661.cst3130.service.ComparisonServiceImpl;
 
 @Configuration
 @EnableTransactionManagement
@@ -78,24 +76,10 @@ public class HibernateConfig {
     }
 
     @Bean
-    public AlcoholicDrinksServiceImp alcoholicDrinksServiceImp() {
-        AlcoholicDrinksServiceImp alcoholicDrinksService = new AlcoholicDrinksServiceImp();
-        alcoholicDrinksService.setAlcoholicDrinksDao(alcoholicDrinksDao());
-        return alcoholicDrinksService;
-    }
-
-    @Bean
     public AlcoholicDrinksVolumeDao alcoholicDrinksVolumeDao() {
         AlcoholicDrinksVolumeDaoImpl dao = new AlcoholicDrinksVolumeDaoImpl();
         dao.setSessionFactory(sessionFactory().getObject());
         return dao;
-    }
-
-    @Bean
-    public AlcoholicDrinksVolumeServiceImpl alcoholicDrinksVolumeServiceImpl() {
-        AlcoholicDrinksVolumeServiceImpl alcoholicDrinksVolumeService = new AlcoholicDrinksVolumeServiceImpl();
-        alcoholicDrinksVolumeService.setAlcoholicDrinksVolumeDao(alcoholicDrinksVolumeDao());
-        return alcoholicDrinksVolumeService;
     }
 
     @Bean
@@ -106,10 +90,12 @@ public class HibernateConfig {
     }
 
     @Bean
-    public ComparisonServiceImpl comparisonService() {
-        ComparisonServiceImpl comparisonService = new ComparisonServiceImpl();
-        comparisonService.setComparisonDao(comparisonDao());
-        return comparisonService;
+    public AlcoholicDrinksServiceImp alcoholicDrinksServiceImp() {
+        AlcoholicDrinksServiceImp alcoholicDrinksService = new AlcoholicDrinksServiceImp();
+        alcoholicDrinksService.setAlcoholicDrinksDao(alcoholicDrinksDao());
+        alcoholicDrinksService.setAlcoholicDrinksVolumeDao(alcoholicDrinksVolumeDao());
+        alcoholicDrinksService.setComparisonDao(comparisonDao());
+        return alcoholicDrinksService;
     }
 
 }

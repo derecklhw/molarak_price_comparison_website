@@ -33,6 +33,14 @@ public class AlcoholicDrinks {
     public AlcoholicDrinks() {
     }
 
+    public AlcoholicDrinks(String name, String description, String brand, String category, String imageUrl) {
+        this.name = name;
+        this.description = description;
+        this.brand = brand;
+        this.category = category;
+        this.imageUrl = imageUrl;
+    }
+
     public int getId() {
         return id;
     }

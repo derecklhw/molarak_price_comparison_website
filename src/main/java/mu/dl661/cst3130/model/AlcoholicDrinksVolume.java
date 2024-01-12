@@ -19,6 +19,11 @@ public class AlcoholicDrinksVolume {
     public AlcoholicDrinksVolume() {
     }
 
+    public AlcoholicDrinksVolume(AlcoholicDrinks alcoholicDrink, int volume) {
+        this.alcoholicDrink = alcoholicDrink;
+        this.volume = volume;
+    }
+
     public int getId() {
         return id;
     }
