@@ -132,9 +132,7 @@ public class WebsiteScraper4 extends Thread {
                     e.printStackTrace();
                 }
             }
-
         }
-
         return 0;
     }
 
