@@ -101,13 +101,14 @@ public class WebsiteScraper1 extends Thread {
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
 
-        // System.out.println(brand);
-        // System.out.println(category);
-        // System.out.println(imageUrl);
-        // System.out.println(volume);
-        // System.out.println(websiteUrl);
-        // System.out.println(price);
-        // System.out.println();
+        System.out.println(name);
+        System.out.println(brand);
+        System.out.println(category);
+        System.out.println(imageUrl);
+        System.out.println(volume);
+        System.out.println(websiteUrl);
+        System.out.println(price);
+        System.out.println();
     }
 
     private String extractProductName(Element prod) {
@@ -156,5 +157,4 @@ public class WebsiteScraper1 extends Thread {
         }
         return maxPrice > 0.0 ? maxPrice : null;
     }
-
 }

@@ -3,7 +3,6 @@ package mu.dl661.cst3130.scraper;
 import java.time.Duration;
 import java.util.Random;
 import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
