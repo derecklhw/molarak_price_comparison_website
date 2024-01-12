@@ -18,9 +18,6 @@ public class AlcoholicDrinks {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
-    private String description;
-
     @Column(name = "brand", length = 50, nullable = false)
     private String brand;
 
@@ -33,9 +30,8 @@ public class AlcoholicDrinks {
     public AlcoholicDrinks() {
     }
 
-    public AlcoholicDrinks(String name, String description, String brand, String category, String imageUrl) {
+    public AlcoholicDrinks(String name, String brand, String category, String imageUrl) {
         this.name = name;
-        this.description = description;
         this.brand = brand;
         this.category = category;
         this.imageUrl = imageUrl;
@@ -47,10 +43,6 @@ public class AlcoholicDrinks {
 
     public String getName() {
         return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public String getBrand() {
@@ -73,10 +65,6 @@ public class AlcoholicDrinks {
         this.name = name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public void setBrand(String brand) {
         this.brand = brand;
     }
@@ -91,8 +79,7 @@ public class AlcoholicDrinks {
 
     @Override
     public String toString() {
-        return String.format("{id: %d, name: %s, brand: %s, category: %s, description: %s}", id, name, brand, category,
-                description);
+        return String.format("{id: %d, name: %s, brand: %s, category: %s, }", id, name, brand, category);
     }
 
 }

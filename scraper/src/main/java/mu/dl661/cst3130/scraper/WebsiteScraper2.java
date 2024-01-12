@@ -98,7 +98,8 @@ public class WebsiteScraper2 extends Thread {
         if (RegexUtil.matches(name, "^The\\s")) {
             name = name.replaceFirst("^The\\s", "").trim();
         }
-        String description = null;
+        name = name.replaceAll("^[^a-zA-Z0-9]+", "").trim();
+
         String category = "scotch-whisky";
         String imageUrl = extractImageUrl(prod);
         int volume = extractVolume(prod);
@@ -107,7 +108,7 @@ public class WebsiteScraper2 extends Thread {
 
         logger.info("Finished scraping: " + urlToScraped);
 
-        saveAlcoholicDrinks(name, description, brand, category, imageUrl, volume, websiteUrl, price);
+        saveAlcoholicDrinks(name, brand, category, imageUrl, volume, websiteUrl, price);
 
         logger.info("Finished saving to database");
 
@@ -165,13 +166,13 @@ public class WebsiteScraper2 extends Thread {
         return 0.0;
     }
 
-    private void saveAlcoholicDrinks(String name, String description, String brand, String category, String imageUrl,
+    private void saveAlcoholicDrinks(String name, String brand, String category, String imageUrl,
             int volume, String websiteUrl, Double price) {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 HibernateConfig.class)) {
 
             AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
-            AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks(name, description, brand, category,
+            AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks(name, brand, category,
                     imageUrl);
             AlcoholicDrinksVolume alcoholicDrinksVolume = new AlcoholicDrinksVolume(alcoholicDrinks, volume);
 
