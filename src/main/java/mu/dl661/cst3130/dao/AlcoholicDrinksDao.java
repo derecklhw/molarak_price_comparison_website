@@ -13,6 +13,8 @@ public interface AlcoholicDrinksDao {
 
     public AlcoholicDrinks getAlcoholicDrinksById(int id);
 
+    public AlcoholicDrinks getAlcoholicDrinksByNameAndBrand(String name, String brand);
+
     List<AlcoholicDrinks> getAllAlcoholicDrinks();
 
     public void deleteAllAlcoholicDrinks();

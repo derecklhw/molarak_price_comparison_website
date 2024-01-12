@@ -33,9 +33,19 @@ public class AlcoholicDrinksServiceImp implements AlcoholicDrinksService {
     @Transactional
     public void saveAlcoholicDrinks(AlcoholicDrinks alcoholicDrinks, AlcoholicDrinksVolume alcoholicDrinksVolume,
             Comparison comparison) {
-        this.alcoholicDrinksDao.saveAlcoholicDrinks(alcoholicDrinks);
-        this.alcoholicDrinksVolumeDao.saveAlcoholicDrinksVolume(alcoholicDrinksVolume);
-        this.comparisonDao.saveComparison(comparison);
+
+        AlcoholicDrinks existingAlcoholicDrinks = alcoholicDrinksDao.getAlcoholicDrinksByNameAndBrand(
+                alcoholicDrinks.getName(),
+                alcoholicDrinks.getBrand());
+        if (existingAlcoholicDrinks == null) {
+            this.alcoholicDrinksDao.saveAlcoholicDrinks(alcoholicDrinks);
+            this.alcoholicDrinksVolumeDao.saveAlcoholicDrinksVolume(alcoholicDrinksVolume);
+            this.comparisonDao.saveComparison(comparison);
+        } else {
+            alcoholicDrinksVolume.setAlcoholicDrink(existingAlcoholicDrinks);
+            this.alcoholicDrinksVolumeDao.saveAlcoholicDrinksVolume(alcoholicDrinksVolume);
+            this.comparisonDao.saveComparison(comparison);
+        }
     }
 
     @Override

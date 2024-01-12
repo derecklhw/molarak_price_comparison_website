@@ -57,6 +57,18 @@ public class AlcoholicDrinksDaoImpl implements AlcoholicDrinksDao {
     }
 
     @Override
+    public AlcoholicDrinks getAlcoholicDrinksByNameAndBrand(String name, String brand) {
+        Session session = this.sessionFactory.openSession();
+        org.hibernate.query.Query<AlcoholicDrinks> query = session.createQuery(
+                "from AlcoholicDrinks where name = :name and brand = :brand", AlcoholicDrinks.class);
+        query.setParameter("name", name);
+        query.setParameter("brand", brand);
+        AlcoholicDrinks alcoholicDrinks = query.uniqueResult();
+        session.close();
+        return alcoholicDrinks;
+    }
+
+    @Override
     public List<AlcoholicDrinks> getAllAlcoholicDrinks() {
         Session session = this.sessionFactory.openSession();
         org.hibernate.query.Query<AlcoholicDrinks> query = session.createQuery("from AlcoholicDrinks",
