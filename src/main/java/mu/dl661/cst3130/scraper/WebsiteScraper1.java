@@ -30,25 +30,32 @@ public class WebsiteScraper1 extends Thread {
 
     @Override
     public void run() {
-        String itemName = "blended-scotch-whisky";
-
         System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
-
         ChromeOptions options = new ChromeOptions();
-
         options.setBinary(
                 System.getProperty("user.dir") + "/chrome-linux64/chrome");
         // options.addArguments("--headless");
 
-        // Create instance of web driver - this must be on the path.
         WebDriver driver = new ChromeDriver(options);
         JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        try {
+            scrapePages(driver, js, wait);
+        } catch (InterruptedException e) {
+            System.out.println("Interrupted Exception: " + e.getMessage());
+        } finally {
+            driver.quit();
+        }
+    }
+
+    private void scrapePages(WebDriver driver, JavascriptExecutor js, WebDriverWait wait) throws InterruptedException {
+        String itemName = "blended-scotch-whisky";
+        Random random = new Random();
+        Integer[] volumeOptions = { 50, 70, 100 };
 
         for (int page = 1; page <= 3; page++) {
             driver.get(url + "/" + itemName + "?p=" + page + "&product_list_limit=96");
-
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
             wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".item.product.product-item")));
 
             // Scroll the page to load all content
@@ -62,73 +69,82 @@ public class WebsiteScraper1 extends Thread {
             }
 
             String htmlSource = driver.getPageSource();
-
             Document doc = Jsoup.parse(htmlSource);
             Elements prods = doc.select(".item.product.product-item");
 
-            Random random = new Random();
-            Integer[] volumeOptions = { 50, 70, 100 };
-
             for (Element prod : prods) {
-
-                String name = "";
-                String brand = "";
-                String category = "scotch-whisky";
-                String imageUrl = "";
-                int volume = 0;
-                String websiteUrl = "";
-                Double price = 0.0;
-
-                Elements prodAnchorTags = prod.select("a.product-item-link");
-
-                for (Element prodAnchorTag : prodAnchorTags) {
-                    name = prodAnchorTag.text();
-                    websiteUrl = prodAnchorTag.attr("href");
-                }
-
-                brand = RegexUtil.matchFirstGroup(name, "The\\s+(\\w+)");
-
-                if (brand == null) {
-                    brand = name.split("\\s+")[0];
-                }
-
-                Elements prodImageTags = prod.select("img.product-image-photo");
-                for (Element prodImageTag : prodImageTags) {
-                    String src = prodImageTag.attr("src");
-                    if (RegexUtil.matches(src, "data:image/png;base64,.*")) {
-                        imageUrl = null;
-                    } else {
-                        imageUrl = src;
-                    }
-                }
-
-                int randomIndex = random.nextInt(volumeOptions.length);
-                volume = volumeOptions[randomIndex];
-
-                Elements prodPriceTags = prod.select("span.price");
-
-                if (!prodPriceTags.isEmpty() && !prodPriceTags.text().trim().isEmpty()) {
-                    String priceText = prodPriceTags.text().trim().replaceAll("[^\\d. ]", "");
-                    Pattern pattern = Pattern.compile("\\d+\\.?\\d*");
-                    Matcher matcher = pattern.matcher(priceText);
-
-                    double maxPrice = 0.0;
-                    while (matcher.find()) {
-                        double foundPrice = Double.parseDouble(matcher.group());
-                        if (foundPrice > maxPrice) {
-                            maxPrice = foundPrice;
-                        }
-                    }
-
-                    if (maxPrice > 0.0) {
-                        price = maxPrice;
-                    }
-                }
-
+                processProduct(prod, random, volumeOptions);
             }
         }
 
-        // Exit driver and close Chrome
-        driver.quit();
     }
+
+    private void processProduct(Element prod, Random random, Integer[] volumeOptions) {
+        String name = extractProductName(prod);
+        String brand = extractBrand(name);
+        name = name.replaceFirst(Pattern.quote(brand), "").trim();
+
+        String category = "scotch-whisky";
+        String imageUrl = extractImageUrl(prod);
+        int volume = volumeOptions[random.nextInt(volumeOptions.length)];
+        String websiteUrl = extractWebsiteUrl(prod);
+        Double price = extractPrice(prod);
+
+        System.out.println(name);
+        System.out.println(brand);
+        System.out.println(category);
+        System.out.println(imageUrl);
+        System.out.println(volume);
+        System.out.println(websiteUrl);
+        System.out.println(price);
+        System.out.println();
+    }
+
+    private String extractProductName(Element prod) {
+        Elements prodAnchorTags = prod.select("a.product-item-link");
+        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().text() : "";
+    }
+
+    private String extractBrand(String name) {
+        String brand = RegexUtil.matchFirstGroup(name, "The\\s+(\\w+)");
+        return brand != null ? brand : name.split("\\s+")[0];
+    }
+
+    private String extractImageUrl(Element prod) {
+        Elements prodImageTags = prod.select("img.product-image-photo");
+        if (!prodImageTags.isEmpty()) {
+            String src = prodImageTags.first().attr("src");
+            return !RegexUtil.matches(src, "data:image/png;base64,.*") ? src : null;
+        }
+        return null;
+    }
+
+    private String extractWebsiteUrl(Element prod) {
+        Elements prodAnchorTags = prod.select("a.product-item-link");
+        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().attr("href") : "";
+    }
+
+    private Double extractPrice(Element prod) {
+        Elements prodPriceTags = prod.select("span.price");
+        if (!prodPriceTags.isEmpty()) {
+            String priceText = prodPriceTags.text().trim().replaceAll("[^\\d. ]", "");
+            return extractMaxPrice(priceText);
+        }
+        return null;
+    }
+
+    private Double extractMaxPrice(String priceText) {
+        Pattern pattern = Pattern.compile("\\d+\\.?\\d*");
+        Matcher matcher = pattern.matcher(priceText);
+
+        double maxPrice = 0.0;
+        while (matcher.find()) {
+            double foundPrice = Double.parseDouble(matcher.group());
+            if (foundPrice > maxPrice) {
+                maxPrice = foundPrice;
+            }
+        }
+        return maxPrice > 0.0 ? maxPrice : null;
+    }
+
 }
