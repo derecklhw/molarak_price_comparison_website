@@ -101,8 +101,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Backend
 
-### Run 
+### Run
 
-```
-npx babel-node src/server.js
+```bash
+npm run dev
 ```
