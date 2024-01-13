@@ -1,6 +1,6 @@
 <template>
   <nav class="nav-bar">
-    <router-link to="/products" class="products-link">
+    <router-link to="/alcoholic-drinks" class="alcoholic-drinks-link">
       <div class="logo-wrap">
         <img :src="logo" />
       </div>
@@ -8,7 +8,7 @@
   </nav>
 </template>
 <script>
-import logo from "@/assets/logo-hexagon.svg";
+import logo from "@/assets/logo-circle.svg";
 
 export default {
   name: "NavBar",
