@@ -5,6 +5,7 @@ import {
   getAlcoholicDrinks,
   searchAlcoholicDrinks,
   countAllAlcoholicDrinks,
+  getAlcoholicDrinkComparison,
 } from "./database.js";
 
 const app = express();
@@ -12,6 +13,11 @@ app.use(express.json());
 
 app.get("/alcoholic_drinks", async (req, res) => {
   const alcoholicDrinks = await getAlcoholicDrinks();
+  res.json(alcoholicDrinks);
+});
+
+app.get("/alcoholic_drinks/comparison/:id", async (req, res) => {
+  const alcoholicDrinks = await getAlcoholicDrinkComparison(req.params.id);
   res.json(alcoholicDrinks);
 });
 

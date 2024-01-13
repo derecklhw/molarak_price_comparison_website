@@ -76,3 +76,35 @@ export async function countAllAlcoholicDrinks() {
   const [rows] = await pool.query("SELECT COUNT(*) FROM alcoholic_drinks");
   return rows[0]["COUNT(*)"];
 }
+
+export async function getAlcoholicDrinkComparison(id) {
+  // Retrieve the name of the alcoholic drink using the provided 'id'
+  const [drinkRows] = await pool.query(
+    "SELECT name FROM alcoholic_drinks WHERE id = ?",
+    [id]
+  );
+
+  // Extract the name from the result
+  const { name } = drinkRows[0];
+
+  // Use the name to search for entries in the 'alcoholic_drinks' table
+  const query = `
+    SELECT 
+      ad.id AS alcoholic_drinks_id, 
+      ad.name AS alcoholic_drinks_name, 
+      ad.brand AS alcoholic_drinks_brand, 
+      ad.imageUrl AS alcoholic_drinks_imageUrl,
+      adv.volume,
+      c.website_name,
+      c.website_url,
+      c.price
+    FROM alcoholic_drinks ad
+    LEFT JOIN alcoholic_drinks_volumes adv ON ad.id = adv.alcoholic_drinks_id
+    LEFT JOIN comparison c ON adv.id = c.alcoholic_drinks_volumes_id
+    WHERE ad.name = ? AND ad.id != ?;  -- Exclude the entry with the provided 'id'
+  `;
+
+  const [comparisonRows] = await pool.query(query, [name, id]);
+
+  return comparisonRows;
+}

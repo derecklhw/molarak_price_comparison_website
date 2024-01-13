@@ -128,6 +128,7 @@ public class WebsiteScraper4 extends Thread {
         }
         name = name.replaceAll("^[^a-zA-Z0-9]+", "").trim();
         name = name.replaceAll("Bot\\..*", "").trim();
+        name = name.trim();
 
         String category = "scotch-whisky";
         String imageUrl = extractImageUrl(prod);

@@ -129,6 +129,7 @@ public class WebsiteScraper2 extends Thread {
             name = name.replaceFirst("^The\\s", "").trim();
         }
         name = name.replaceAll("^[^a-zA-Z0-9]+", "").trim();
+        name = name.trim();
 
         String category = "scotch-whisky";
         String imageUrl = extractImageUrl(prod);

@@ -143,6 +143,7 @@ public class WebsiteScraper1 extends Thread {
         String imageUrl = extractImageUrl(prod);
         int volume = volumeOptions[random.nextInt(volumeOptions.length)];
         name = name.replaceFirst("(\\d{1,2})\\s*cl", "");
+        name = name.trim();
 
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
