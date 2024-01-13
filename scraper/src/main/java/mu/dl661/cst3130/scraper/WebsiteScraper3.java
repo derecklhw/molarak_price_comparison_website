@@ -81,14 +81,16 @@ public class WebsiteScraper3 extends Thread {
      * @throws InterruptedException If the thread is interrupted.
      */
     private void scrapePages(WebDriver driver, JavascriptExecutor js, WebDriverWait wait) throws InterruptedException {
+        logger.info("Scraping website started: " + url);
+
         String itemName = "whisky~c14232";
         Random random = new Random();
         Integer[] volumeOptions = { 50, 70, 100 };
 
-        for (int page = 0; page <= 120; page += 60) {
+        for (int page = 0; page <= 240; page += 60) {
             String urlToScraped = url + "/gb/" + itemName + "/?category=14232&offset=" + page;
             driver.get(urlToScraped);
-            logger.info("Scraping: " + urlToScraped);
+            logger.info("Scraping page started: " + urlToScraped);
             wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector(".product.cb")));
 
             // Scroll the page to load all content
@@ -106,12 +108,12 @@ public class WebsiteScraper3 extends Thread {
             Elements prods = doc.select(".product.cb");
 
             for (Element prod : prods) {
-                processProduct(prod, random, volumeOptions, urlToScraped);
+                processProduct(prod, random, volumeOptions);
             }
-
-            logger.info("Finished scraping website: " + url);
-
+            logger.info("Scraping page finished: " + urlToScraped);
         }
+        logger.info("Scraping website finished: " + url);
+
     }
 
     /**
@@ -122,7 +124,7 @@ public class WebsiteScraper3 extends Thread {
      * @param volumeOptions The array of volume options.
      * @param urlToScraped  The URL of the website being scraped.
      */
-    private void processProduct(Element prod, Random random, Integer[] volumeOptions, String urlToScraped) {
+    private void processProduct(Element prod, Random random, Integer[] volumeOptions) {
         String name = extractProductName(prod);
         String brand = extractBrand(name);
         name = name.replaceFirst(Pattern.quote(brand), "").trim();
@@ -136,14 +138,12 @@ public class WebsiteScraper3 extends Thread {
         String category = "scotch-whisky";
         String imageUrl = extractImageUrl(prod);
         int volume = extractVolume(prod, random, volumeOptions);
+        name = name.replaceFirst("(\\d{1,2})\\s*cl", "");
+
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
 
-        logger.info("Finished scraping: " + urlToScraped);
-
         saveAlcoholicDrinks(name, brand, category, imageUrl, volume, websiteUrl, price);
-
-        logger.info("Finished saving to database");
 
     }
 
@@ -155,7 +155,7 @@ public class WebsiteScraper3 extends Thread {
      */
     private String extractProductName(Element prod) {
         Elements prodAnchorTags = prod.select("span.name");
-        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().text() : "";
+        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().text() : null;
     }
 
     /**
@@ -178,7 +178,7 @@ public class WebsiteScraper3 extends Thread {
     private String extractImageUrl(Element prod) {
         Elements prodImageTags = prod.select(
                 "span.image > picture > source");
-        return !prodImageTags.isEmpty() ? prodImageTags.first().attr("data-src") : "";
+        return !prodImageTags.isEmpty() ? prodImageTags.first().attr("data-src") : null;
     }
 
     /**
@@ -216,7 +216,7 @@ public class WebsiteScraper3 extends Thread {
      */
     private String extractWebsiteUrl(Element prod) {
         Elements prodAnchorTags = prod.select("div.product.cb");
-        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().attr("data-product-link") : "";
+        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().attr("data-product-link") : null;
     }
 
     /**
@@ -256,6 +256,15 @@ public class WebsiteScraper3 extends Thread {
             int volume, String websiteUrl, Double price) {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 HibernateConfig.class)) {
+            if (name.length() < 1) {
+                name = null;
+            }
+            if (imageUrl.length() < 1) {
+                imageUrl = null;
+            }
+            if (websiteUrl.length() < 1) {
+                websiteUrl = null;
+            }
 
             AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
             AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks(name, brand, category,
@@ -266,7 +275,8 @@ public class WebsiteScraper3 extends Thread {
             alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks, alcoholicDrinksVolume, comparison);
             context.close();
 
-            logger.info("Alcoholic Drink: " + alcoholicDrinks.getName() + " saved successfully");
+            logger.info("Alcoholic Drink saved successfully: " + alcoholicDrinks.getBrand() + " "
+                    + alcoholicDrinks.getName());
         } catch (Exception e) {
             logger.error("Error saving alcoholic drink: " + e.getMessage());
         }

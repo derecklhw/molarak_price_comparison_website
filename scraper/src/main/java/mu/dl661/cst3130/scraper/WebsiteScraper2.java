@@ -80,11 +80,13 @@ public class WebsiteScraper2 extends Thread {
      * @throws InterruptedException if the thread is interrupted.
      */
     private void scrapePages(WebDriver driver, JavascriptExecutor js, WebDriverWait wait) throws InterruptedException {
+        logger.info("Scraping website started: " + url);
+
         String itemName = "scotch-whisky";
 
         String urlToScraped = url + "/whisky/shop-all-" + itemName + "/?current=n_" + 1 + "_n&size=n_75_n";
         driver.get(urlToScraped);
-        logger.info("Scraping: " + urlToScraped);
+        logger.info("Scraping page started: " + urlToScraped);
 
         wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
                 By.cssSelector(".Productstyled__StyledProduct-sc-1u7jkhl-0.gYdgyw")));
@@ -103,10 +105,11 @@ public class WebsiteScraper2 extends Thread {
         Elements prods = doc.select(".Productstyled__StyledProduct-sc-1u7jkhl-0.gYdgyw");
 
         for (Element prod : prods) {
-            processProduct(prod, urlToScraped);
+            processProduct(prod);
         }
+        logger.info("Scraping page finished: " + urlToScraped);
 
-        logger.info("Finished scraping website: " + url);
+        logger.info("Scraping website finished: " + url);
 
     }
 
@@ -116,7 +119,7 @@ public class WebsiteScraper2 extends Thread {
      * @param prod         The product element to be processed.
      * @param urlToScraped The URL of the website being scraped.
      */
-    private void processProduct(Element prod, String urlToScraped) {
+    private void processProduct(Element prod) {
         String name = extractProductName(prod);
         String brand = extractBrand(name);
         name = name.replaceFirst(Pattern.quote(brand), "").trim();
@@ -133,11 +136,7 @@ public class WebsiteScraper2 extends Thread {
         String websiteUrl = extractWebsiteUrl(prod);
         Double price = extractPrice(prod);
 
-        logger.info("Finished scraping: " + urlToScraped);
-
         saveAlcoholicDrinks(name, brand, category, imageUrl, volume, websiteUrl, price);
-
-        logger.info("Finished saving to database");
 
     }
 
@@ -149,7 +148,7 @@ public class WebsiteScraper2 extends Thread {
      */
     private String extractProductName(Element prod) {
         Elements prodAnchorTags = prod.select("a.Productstyled__StyledProductTitle-sc-1u7jkhl-4.fkAzjy");
-        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().text() : "";
+        return !prodAnchorTags.isEmpty() ? prodAnchorTags.first().text() : null;
     }
 
     /**
@@ -172,7 +171,7 @@ public class WebsiteScraper2 extends Thread {
     private String extractImageUrl(Element prod) {
         Elements prodImageTags = prod.select(
                 "img.Imagestyled__StyledImage-sc-o2u3zt-0.fqTGiu.Productstyled__StyledProductImage-sc-1u7jkhl-2.hGWvXZ");
-        return !prodImageTags.isEmpty() ? url + prodImageTags.first().attr("src") : "";
+        return !prodImageTags.isEmpty() ? url + prodImageTags.first().attr("src") : null;
     }
 
     /**
@@ -204,7 +203,7 @@ public class WebsiteScraper2 extends Thread {
      */
     private String extractWebsiteUrl(Element prod) {
         Elements prodAnchorTags = prod.select("a.Productstyled__StyledProductImageAnchor-sc-1u7jkhl-1.kehXyw");
-        return !prodAnchorTags.isEmpty() ? url + prodAnchorTags.first().attr("href") : "";
+        return !prodAnchorTags.isEmpty() ? url + prodAnchorTags.first().attr("href") : null;
     }
 
     /**
@@ -244,6 +243,15 @@ public class WebsiteScraper2 extends Thread {
             int volume, String websiteUrl, Double price) {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
                 HibernateConfig.class)) {
+            if (name.length() < 1) {
+                name = null;
+            }
+            if (imageUrl.length() < 1) {
+                imageUrl = null;
+            }
+            if (websiteUrl.length() < 1) {
+                websiteUrl = null;
+            }
 
             AlcoholicDrinksService alcoholicDrinksService = context.getBean(AlcoholicDrinksService.class);
             AlcoholicDrinks alcoholicDrinks = new AlcoholicDrinks(name, brand, category,
@@ -254,7 +262,8 @@ public class WebsiteScraper2 extends Thread {
             alcoholicDrinksService.saveAlcoholicDrinks(alcoholicDrinks, alcoholicDrinksVolume, comparison);
             context.close();
 
-            logger.info("Alcoholic Drink: " + alcoholicDrinks.getName() + " saved successfully");
+            logger.info("Alcoholic Drink saved successfully: " + alcoholicDrinks.getBrand() + " "
+                    + alcoholicDrinks.getName());
         } catch (Exception e) {
             logger.error("Error saving alcoholic drink: " + e.getMessage());
         }
