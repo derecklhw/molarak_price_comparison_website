@@ -27,6 +27,7 @@
     <h5>Nothing to compare</h5>
   </div>
 </template>
+
 <script>
 import defaultImage from "@/assets/default-image.png";
 
@@ -39,6 +40,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Redirects the user to the merchant's website for purchasing the alcoholic drink.
+     * @param {string} website_url - The URL of the merchant's website.
+     */
     redirectToPurchase(website_url) {
       window.location.href = website_url;
     },

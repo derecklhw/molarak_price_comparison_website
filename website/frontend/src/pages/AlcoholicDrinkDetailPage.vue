@@ -50,6 +50,9 @@ export default {
       });
   },
   methods: {
+    /**
+     * Redirects the user to the merchant's website for purchasing the alcoholic drink.
+     */
     redirectToPurchase() {
       const purchaseUrl = this.alcoholicDrink.website_url;
       window.location.href = purchaseUrl;

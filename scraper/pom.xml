@@ -134,21 +134,6 @@
         </additionalClasspathElements>
         </configuration>
       </plugin>
-      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
-      <!-- <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>mu.dl661.cst3130.Main</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin> -->
       <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-assembly-plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -12,11 +12,21 @@ const pool = mysql
   })
   .promise();
 
+/**
+ * Retrieves all alcoholic drinks from the database.
+ * @returns {Promise<Array<Object>>} - The alcoholic drinks.
+ *
+ */
 export async function getAlcoholicDrinks() {
   const [rows] = await pool.query("SELECT * FROM alcoholic_drinks");
   return rows;
 }
 
+/**
+ * Retrieves an alcoholic drink from the database using the provided 'id'.
+ * @param {number} id - The id of the alcoholic drink to retrieve.
+ * @returns {Promise<Object>} - The alcoholic drink.
+ */
 export async function getAlcoholicDrink(id) {
   const query = `
     SELECT 
@@ -39,6 +49,13 @@ export async function getAlcoholicDrink(id) {
   return rows[0];
 }
 
+/**
+ * Searches for alcoholic drinks based on the provided search term.
+ * @param {string} search - The search term to match against the name of alcoholic drinks.
+ * @param {number} limit - The maximum number of results to return.
+ * @param {number} offset - The number of results to skip before starting to return data.
+ * @returns {Promise<{ data: Array<Object>, count: number }>} - The search results and the total count of matching records.
+ */
 export async function searchAlcoholicDrinks(search, limit, offset) {
   // Query for fetching data
   let dataQuery = `
@@ -85,6 +102,11 @@ export async function searchAlcoholicDrinks(search, limit, offset) {
   };
 }
 
+/**
+ * Retrieves the comparison data for the alcoholic drink with the provided 'id'.
+ * @param {number} id - The id of the alcoholic drink.
+ * @returns {Promise<Array<Object>>} - The comparison data.
+ */
 export async function getAlcoholicDrinkComparison(id) {
   // Retrieve the name of the alcoholic drink using the provided 'id'
   const [drinkRows] = await pool.query(

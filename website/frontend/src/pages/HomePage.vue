@@ -33,11 +33,18 @@ export default {
     };
   },
   computed: {
+    /**
+     * Checks if the search query is valid.
+     * @returns {boolean} - True if the search query is valid, false otherwise.
+     */
     isSearchQueryValid() {
       return this.searchQuery.trim().length > 0;
     },
   },
   methods: {
+    /**
+     * Redirects the user to the search page.
+     */
     onEnter() {
       if (this.isSearchQueryValid) {
         this.$router.push(

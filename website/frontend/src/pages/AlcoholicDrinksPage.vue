@@ -67,6 +67,9 @@ export default {
     },
   },
   methods: {
+    /**
+     * Fetches the alcoholic drinks from the API.
+     */
     async fetchData() {
       const defaultLimit = 9;
       const defaultOffset = 0;
@@ -86,6 +89,9 @@ export default {
   },
 
   computed: {
+    /**
+     * Returns an array of page numbers to display in the pagination.
+     */
     displayedPages() {
       // Determine the start and end page numbers for the pagination
       let startPage = Math.max(
