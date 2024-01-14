@@ -4,21 +4,37 @@
   <nav>
     <ul class="pagination justify-content-center">
       <li class="page-item">
-        <a class="page-link page-link-color" style="color: black" href="#"
-          >Previous</a
+        <router-link
+          :to="`/alcoholic-drinks/search/${searchQuery}?limit=9&offset=${Math.max(
+            0,
+            offset - 1
+          )}`"
+          class="page-link"
+          style="color: black"
+          >Previous</router-link
+        >
+      </li>
+      <!-- Dynamic pagination items -->
+      <li class="page-item" v-for="page in displayedPages" :key="page">
+        <router-link
+          :to="`/alcoholic-drinks/search/${searchQuery}?limit=9&offset=${
+            page - 1
+          }`"
+          class="page-link"
+          style="color: black"
+          >{{ page }}</router-link
         >
       </li>
       <li class="page-item">
-        <a class="page-link" style="color: black" href="#">1</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" style="color: black" href="#">2</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" style="color: black" href="#">3</a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" style="color: black" href="#">Next</a>
+        <router-link
+          :to="`/alcoholic-drinks/search/${searchQuery}?limit=9&offset=${Math.min(
+            totalPages - 1,
+            offset + 1
+          )}`"
+          class="page-link"
+          style="color: black"
+          >Next</router-link
+        >
       </li>
     </ul>
   </nav>
@@ -34,27 +50,62 @@ export default {
     return {
       alcoholicDrinks: [],
       searchQuery: "",
+      totalPages: 0,
+      limit: 0,
+      offset: 0,
+      displayedPageCount: 3,
     };
   },
   async created() {
-    // Default values for limit and offset
-    const defaultLimit = 9;
-    const defaultOffset = 0;
+    this.fetchData();
+  },
+  watch: {
+    $route(to, from) {
+      if (to.query.offset !== from.query.offset) {
+        this.fetchData();
+      }
+    },
+  },
+  methods: {
+    async fetchData() {
+      const defaultLimit = 9;
+      const defaultOffset = 0;
+      this.limit = this.$route.query.limit || defaultLimit;
+      this.offset = parseInt(this.$route.query.offset) || defaultOffset;
+      this.searchQuery = this.$route.params.search;
 
-    // Getting the limit and offset from the router query parameters
-    // If they are not provided, use the default values
-    const limit = this.$route.query.limit || defaultLimit;
-    const offset = this.$route.query.offset || defaultOffset;
+      await axios
+        .get(
+          `/alcoholic_drinks/search/${this.searchQuery}?limit=${this.limit}&offset=${this.offset}`
+        )
+        .then((response) => {
+          this.alcoholicDrinks = response.data.data;
+          this.totalPages = Math.ceil(response.data.count / this.limit);
+        });
+    },
+  },
 
-    this.searchQuery = this.$route.params.search;
+  computed: {
+    displayedPages() {
+      // Determine the start and end page numbers for the pagination
+      let startPage = Math.max(
+        1,
+        this.offset - Math.floor(this.displayedPageCount / 2)
+      );
+      let endPage = startPage + this.displayedPageCount - 1;
 
-    await axios
-      .get(
-        `/alcoholic_drinks/search/${this.$route.params.search}?limit=${limit}&offset=${offset}`
-      )
-      .then((response) => {
-        this.alcoholicDrinks = response.data;
-      });
+      // Adjust if endPage goes beyond total pages
+      if (endPage > this.totalPages) {
+        endPage = this.totalPages;
+        startPage = Math.max(1, endPage - this.displayedPageCount + 1);
+      }
+
+      // Generate the array of page numbers
+      return Array.from(
+        { length: endPage - startPage + 1 },
+        (_, i) => startPage + i
+      );
+    },
   },
 };
 </script>
