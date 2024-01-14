@@ -4,33 +4,56 @@
       <img :src="alcoholicDrink.alcoholic_drinks_imageUrl" />
     </div>
     <div class="alcoholic-drink-details">
-      <h1>{{ alcoholicDrink.alcoholic_drinks_name }}</h1>
-      <h3 class="price">{{ alcoholicDrink.price }}</h3>
-      <button class="add-to-cart">Add to Cart</button>
+      <h1>
+        <strong>{{ alcoholicDrink.alcoholic_drinks_brand }}</strong>
+        <h3>{{ alcoholicDrink.alcoholic_drinks_name }}</h3>
+      </h1>
+      <div class="d-flex justify-content-between">
+        <h3 class="mb-0">Price from £{{ alcoholicDrink.price }}</h3>
+        <h3 class="mb-0">Volume: {{ alcoholicDrink.volume }}cl</h3>
+      </div>
+      <button class="add-to-cart" @click="redirectToPurchase">Buy</button>
     </div>
+    <AlcoholicDrinksComparisonList
+      :alcoholicDrinks="comparaisonAlcoholicDrinks"
+    ></AlcoholicDrinksComparisonList>
   </div>
   <div v-else>
     <NotFoundPage></NotFoundPage>
   </div>
 </template>
 <script>
+import AlcoholicDrinksComparisonList from "@/components/AlcoholicDrinksComparisonList.vue";
 import NotFoundPage from "./NotFoundPage.vue";
 import axios from "axios";
 
 export default {
   name: "AlcoholicDrinkDetailPage",
-  components: { NotFoundPage },
+  components: { NotFoundPage, AlcoholicDrinksComparisonList },
   data() {
     return {
       alcoholicDrink: null,
+      comparaisonAlcoholicDrinks: [],
     };
   },
   async created() {
-    const response = await axios.get(
-      `/alcoholic_drinks/${this.$route.params.id}`
-    );
-    const alcoholicDrink = response.data;
-    this.alcoholicDrink = alcoholicDrink;
+    await axios
+      .get(`/alcoholic_drinks/${this.$route.params.id}`)
+      .then((res) => {
+        this.alcoholicDrink = res.data;
+        axios
+          .get(`/alcoholic_drinks/comparison/${this.$route.params.id}`)
+          .then((res) => {
+            console.log(res.data);
+            this.comparaisonAlcoholicDrinks = res.data;
+          });
+      });
+  },
+  methods: {
+    redirectToPurchase() {
+      const purchaseUrl = this.alcoholicDrink.website_url;
+      window.location.href = purchaseUrl;
+    },
   },
 };
 </script>

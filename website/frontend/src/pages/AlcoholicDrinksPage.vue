@@ -1,7 +1,7 @@
 <template>
   <h1>Search results for: {{ searchQuery }}</h1>
   <AlcoholicDrinksList :alcoholicDrinks="alcoholicDrinks"></AlcoholicDrinksList>
-  <nav>
+  <nav v-if="alcoholicDrinks.length > 0">
     <ul class="pagination justify-content-center">
       <li class="page-item">
         <router-link

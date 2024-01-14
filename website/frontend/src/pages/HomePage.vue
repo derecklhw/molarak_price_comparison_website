@@ -2,6 +2,7 @@
   <h1>{{ msg }}</h1>
   <br />
   <br />
+  <br />
   <div class="input-group input-group-lg">
     <div class="input-group mb-3">
       <input
@@ -11,7 +12,10 @@
         v-model="searchQuery"
         @keydown.enter="onEnter"
       />
+    </div>
+    <div>
       <router-link
+        v-if="isSearchQueryValid"
         :to="'alcoholic-drinks/search/' + searchQuery + '?limit=9&offset=0'"
         ><button class="btn btn-dark btn-lg" type="button" id="search-button">
           Search
@@ -29,11 +33,18 @@ export default {
       searchQuery: "",
     };
   },
+  computed: {
+    isSearchQueryValid() {
+      return this.searchQuery.trim().length > 0;
+    },
+  },
   methods: {
     onEnter() {
-      this.$router.push(
-        "alcoholic-drinks/search/" + this.searchQuery + "?limit=9&offset=0"
-      );
+      if (this.isSearchQueryValid) {
+        this.$router.push(
+          "alcoholic-drinks/search/" + this.searchQuery + "?limit=9&offset=0"
+        );
+      }
     },
   },
 };

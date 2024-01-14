@@ -1,4 +1,6 @@
 <template>
+  <br />
+  <h2><strong>Comparison</strong></h2>
   <div v-if="alcoholicDrinks.length > 0" class="grid-wrap">
     <div
       class="alcoholic-drink-item"
@@ -12,15 +14,17 @@
       <h3 class="alcoholic-drink-name mt-1">
         {{ alcoholicDrink.alcoholic_drinks_name }}
       </h3>
-      <!-- <p class="alcoholic-drink-price">{{ alcoholicDrink.price }}</p> -->
-      <router-link
-        :to="'/alcoholic-drinks/' + alcoholicDrink.alcoholic_drinks_id"
-        ><button class="btn btn-dark">Compare</button></router-link
+      <h3 class="alcoholic-drink-name mt-1">£ {{ alcoholicDrink.price }}</h3>
+      <button
+        class="btn btn-dark"
+        @click="redirectToPurchase(alcoholicDrink.website_url)"
       >
+        To merchant
+      </button>
     </div>
   </div>
   <div v-else>
-    <h5>Nothing to display</h5>
+    <h5>Nothing to compare</h5>
   </div>
 </template>
 <script>
@@ -33,6 +37,11 @@ export default {
     return {
       defaultImage,
     };
+  },
+  methods: {
+    redirectToPurchase(website_url) {
+      window.location.href = website_url;
+    },
   },
 };
 </script>
