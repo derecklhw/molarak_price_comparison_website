@@ -40,7 +40,8 @@ export async function getAlcoholicDrink(id) {
 }
 
 export async function searchAlcoholicDrinks(search, limit, offset) {
-  let query = `
+  // Query for fetching data
+  let dataQuery = `
     SELECT 
       ad.id AS alcoholic_drinks_id, 
       ad.name AS alcoholic_drinks_name, 
@@ -54,27 +55,34 @@ export async function searchAlcoholicDrinks(search, limit, offset) {
     LEFT JOIN comparison c ON adv.id = c.alcoholic_drinks_volumes_id
     WHERE ad.name LIKE ?`;
 
-  // Check if both 'limit' and 'offset' are provided and add them to the query
-  if (limit !== undefined && offset !== undefined) {
-    query += " LIMIT ? OFFSET ?";
-  }
+  // Query for counting total records
+  let countQuery = `
+    SELECT COUNT(*) AS total
+    FROM alcoholic_drinks ad
+    WHERE ad.name LIKE ?`;
 
-  // Execute the query with parameters
   const queryParams = [`%${search}%`];
 
-  // Add 'limit' and 'offset' parameters if they are both provided
+  // Add 'limit' and 'offset' parameters for the data query if they are both provided
   if (limit !== undefined && offset !== undefined) {
+    dataQuery += " LIMIT ? OFFSET ?";
     queryParams.push(parseInt(limit)); // Assuming 'limit' is a number
     queryParams.push(parseInt(offset)); // Assuming 'offset' is a number
   }
 
-  const [rows] = await pool.query(query, queryParams);
-  return rows;
-}
+  // Execute the data query
+  const [dataRows] = await pool.query(dataQuery, queryParams);
 
-export async function countAllAlcoholicDrinks() {
-  const [rows] = await pool.query("SELECT COUNT(*) FROM alcoholic_drinks");
-  return rows[0]["COUNT(*)"];
+  // Execute the count query
+  const [countRows] = await pool.query(countQuery, [`%${search}%`]);
+
+  // Extract the total count
+  const totalCount = countRows[0].total;
+
+  return {
+    data: dataRows,
+    count: totalCount,
+  };
 }
 
 export async function getAlcoholicDrinkComparison(id) {
