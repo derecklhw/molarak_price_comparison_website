@@ -1,10 +1,10 @@
 <template>
   <div v-if="alcoholicDrink">
     <div class="img-wrap">
-      <img :src="alcoholicDrink.imageName" />
+      <img :src="alcoholicDrink.alcoholic_drinks_imageUrl" />
     </div>
     <div class="alcoholic-drink-details">
-      <h1>{{ alcoholicDrink.name }}</h1>
+      <h1>{{ alcoholicDrink.alcoholic_drinks_name }}</h1>
       <h3 class="price">{{ alcoholicDrink.price }}</h3>
       <button class="add-to-cart">Add to Cart</button>
     </div>
@@ -14,18 +14,23 @@
   </div>
 </template>
 <script>
-import { alcoholicDrinks } from "../temp-data";
 import NotFoundPage from "./NotFoundPage.vue";
+import axios from "axios";
 
 export default {
   name: "AlcoholicDrinkDetailPage",
   components: { NotFoundPage },
   data() {
     return {
-      alcoholicDrink: alcoholicDrinks.find(
-        (alcoholicDrink) => alcoholicDrink.id === this.$route.params.id
-      ),
+      alcoholicDrink: null,
     };
+  },
+  async created() {
+    const response = await axios.get(
+      `/alcoholic_drinks/${this.$route.params.id}`
+    );
+    const alcoholicDrink = response.data;
+    this.alcoholicDrink = alcoholicDrink;
   },
 };
 </script>
