@@ -1,6 +1,6 @@
 <template>
   <nav class="nav-bar">
-    <router-link to="/alcoholic-drinks" class="alcoholic-drinks-link">
+    <router-link to="/" class="alcoholic-drinks-link">
       <div class="logo-wrap">
         <img :src="logo" />
       </div>
