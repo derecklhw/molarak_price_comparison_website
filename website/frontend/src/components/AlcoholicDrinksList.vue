@@ -20,6 +20,7 @@
     </div>
   </div>
   <div v-else>
+    <br />
     <h5>Nothing to display</h5>
   </div>
 </template>

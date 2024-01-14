@@ -2,7 +2,6 @@
   <h1>{{ msg }}</h1>
   <br />
   <br />
-  <br />
   <div class="input-group input-group-lg">
     <div class="input-group mb-3">
       <input
