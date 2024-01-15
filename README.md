@@ -2,20 +2,6 @@
 
 ## Scraper
 
-Install default OpenJDK
-
-```bash
-sudo apt-get install default-jdk
-```
-
-Install Maven
-
-```bash
-sudo apt-get install maven
-```
-
-<https://www.hostinger.com/tutorials/how-to-install-maven-on-ubuntu>
-
 Build project
 
 ```bash
@@ -40,12 +26,17 @@ or
 mvn site
 ```
 
-Selenium config
+Selenium Installation
 
 Pre-requisites:
 
-1. Google Chrome 119.0.6045.159 - has been downgraded to 118, will need to write docs on the process <https://www.youtube.com/watch?v=OlMX0gxyL58>
-2. Chrome Driver 119.0.6045.159 <https://chromedriver.chromium.org/downloads>
+Google Chrome & Chrome Driver version: 118.0.5993.70
+
+Downloads: <https://chromedriver.chromium.org/downloads> 
+
+Reference:  <https://www.youtube.com/watch?v=OlMX0gxyL58>
+
+Selenium Configuration
 
 ```java
 System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
@@ -71,37 +62,35 @@ sudo mysqldump -u root -p molarak > dump_molarak.sql
 
 ### frontend
 
-## Project setup
+#### Project setup
 
-```
+```bash
 npm install
 ```
 
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 
-```
+```bash
 npm run serve
 ```
 
-### Compiles and minifies for production
+#### Compiles and minifies for production
 
-```
+```bash
 npm run build
 ```
 
-### Lints and fixes files
+#### Lints and fixes files
 
-```
+```bash
 npm run lint
 ```
 
-### Customize configuration
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
 
-## Backend
+### Backend
 
-### Run
+#### Run
 
 ```bash
 npm run dev
