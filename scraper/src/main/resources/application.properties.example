@@ -1,8 +1,8 @@
 # MySQL properties
 database.driver = com.mysql.cj.jdbc.Driver
 database.url = jdbc:mysql://localhost:3306/molarak?serverTimezone=UTC
-database.root = dereck
-database.password = Dodobird@4698
+database.root = 
+database.password = 
 
 # Hibernate properties
 hibernate.connection.pool_size = 5
