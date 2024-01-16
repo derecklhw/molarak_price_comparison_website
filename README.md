@@ -122,9 +122,13 @@ npm run build
 npm run lint
 ```
 
-### Backend
+## Backend
 
-#### Run backend server
+### Project setup
+
+```bash
+npm install
+```
 
 Create .env file in `website/backend/` directory and add the following
 
@@ -135,7 +139,7 @@ MYSQL_PASSWORD = ""
 MYSQL_DATABASE = "molarak"
 ```
 
-Navigate to `website/backend/src` directory and run
+### Run REST API server
 
 ```bash
 npm run dev
